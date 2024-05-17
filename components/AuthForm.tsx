@@ -6,8 +6,7 @@ import AuthProviderButtons from "./AuthProviderButtons";
 const AuthForm = ({ isLogin }: AuthFormProps) => {
     return (
         <>
-            {/* LEFT SIDE */}
-            <AuthSidebar />
+            <AuthSidebar href={isLogin ? "/signup" : "/login"} />
             {/* RIGHT SIDE */}
             <div className="w-[300px] lg:w-[600px] h-auto lg:h-[750px] lg:rounded-r-3xl lg:rounded-tl-none lg:rounded-bl-none lg:rounded-tr-3xl border border-white border-opacity-50 bg-white/7 backdrop-blur-[7.5px] bg-[rgba(255,255,255,0.07)] text-white flex flex-col items-center py-6 gap-4 rounded-3xl">
                 <h1 className="text-white text-[24px] lg:text-[40px] not-italic font-bold leading-[normal] tracking-[2px]">
@@ -32,7 +31,7 @@ const AuthForm = ({ isLogin }: AuthFormProps) => {
                             <InputField label="Confirm Password*" placeholder="******" customClasses="w-full" type="password" />
                         </>
                     )}
-                    <button type="submit" className="text-black bg-white py-2 w-2/3 rounded-[36px] text-[14px] font-bold lg:text-[20px]">
+                    <button type="submit" className="text-black bg-white py-2 w-2/3 rounded-[36px] text-[14px] font-semibold lg:text-[20px]">
                         {isLogin ? "Sign In" : "Sign Up"}
                     </button>
                     {/* remember me checkbox */}

@@ -5,11 +5,11 @@ const AuthProviderButton = ({ provider }: { provider: "google" | "github" }) => 
         <button className="flex justify-center items-center py-2 px-4 gap-2 bg-[#D9D9D9] bg-opacity-5 border-[1px] border-white rounded-[5px]">
             <Image src={`/icons/${provider}.svg`}
                 alt={`${provider} icon`}
-                width={48}
-                height={48}
-                className='w-[24px] h-[24px]'
+                width={32}
+                height={32}
+                className='object-contain'
             />
-            <span className="hidden md:block text-[14px]">Continue with Google</span>
+            <span className="hidden md:block text-[14px]">Continue with {provider[0].toUpperCase() + provider.slice(1)}</span>
         </button>
     )
 }
