@@ -4,7 +4,7 @@ import AuthProviderButton from './AuthProviderButton'
 
 const AuthProviderButtons = () => {
     return (
-        <div className="flex gap-6">
+        <div className="flex gap-4 lg:gap-6">
             {/* Google */}
             <AuthProviderButton provider="google" />
             {/* Github */}

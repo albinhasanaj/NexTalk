@@ -3,9 +3,9 @@ import React from 'react'
 
 const AuthSidebar = () => {
     return (
-        <div className="w-[350px] h-[750px] flex-shrink-0 rounded-l-3xl rounded-tr-none rounded-br-none rounded-bl-3xl border border-white border-opacity-50 bg-white/7 backdrop-blur-[7.5px] flex justify-center bg-[rgba(255,255,255,0.07)]">
+        <div className="hidden md:flex w-[350px] h-[750px] flex-shrink-0 rounded-l-3xl rounded-tr-none rounded-br-none rounded-bl-3xl border border-white border-opacity-50 bg-white/7 backdrop-blur-[7.5px] justify-center bg-[rgba(255,255,255,0.07)] py-6">
             <div className='flex flex-col justify-between items-center'>
-                <h1 className='text-white text-[40px] not-italic font-bold leading-[normal] tracking-[2px] mt-[3.5rem]'>
+                <h1 className='text-white text-[40px] not-italic font-bold leading-[normal] tracking-[2px]'>
                     Sign Up
                 </h1>
                 <Image
