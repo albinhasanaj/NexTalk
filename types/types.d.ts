@@ -8,3 +8,13 @@ declare interface InputFieldProps {
     placeholder: string;
     customClasses: string;
 };
+
+declare interface FriendProps {
+    name: string;
+    nickname: string;
+    profilePic: string;
+    isOnline: boolean;
+    hasIcon: string;
+    isPinned: boolean;
+    newMessages: number;
+};
