@@ -8,10 +8,10 @@ datasource db {
 }
 
 model User {
-  userId   String @id @default(uuid()) // UUID generation handled by Prisma
-  username String @unique
-  email    String @unique
-  password String
+  user_id  String  @id @default(uuid()) // UUID generation handled by Prisma
+  username String  @unique
+  email    String  @unique
+  password String? //Make password optional for Google and GitHub users
 
   @@map("users")
 }
