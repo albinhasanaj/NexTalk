@@ -7,6 +7,8 @@ declare interface InputFieldProps {
     type: string;
     placeholder: string;
     customClasses: string;
+    name: string;
+    handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 declare interface FriendProps {

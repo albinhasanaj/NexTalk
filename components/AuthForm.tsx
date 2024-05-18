@@ -1,10 +1,56 @@
-import Image from "next/image";
+"use client";
 import AuthSidebar from "./AuthSidebar";
 import InputField from "./InputField";
 import AuthProviderButtons from "./AuthProviderButtons";
 import Link from "next/link";
+import { useState } from "react";
 
 const AuthForm = ({ isLogin }: AuthFormProps) => {
+
+    const [values, setValues] = useState({
+        username: "",
+        email: "",
+        password: ""
+    });
+
+
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setValues({
+            ...values,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    const onFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (isLogin) {
+            try {
+                // fetch to backend
+            } catch (error) {
+                console.log(error);
+            }
+
+        } else {
+            try {
+                // fetch to backend
+                const response = await fetch("/api/auth/signup", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify(values)
+                });
+                if (response.ok) {
+                    console.log("User created successfully");
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    };
+
     return (
         <>
             <AuthSidebar href={isLogin ? "/signup" : "/login"} />
@@ -12,20 +58,30 @@ const AuthForm = ({ isLogin }: AuthFormProps) => {
             <div className="w-[300px] md:w-[500px] md:h-[600px] lg:w-[600px] h-auto lg:h-[750px] md:rounded-r-3xl md:rounded-tl-none md:rounded-bl-none md:rounded-tr-3xl border border-white border-opacity-50 bg-white/7 backdrop-blur-[7.5px] bg-[rgba(255,255,255,0.07)] text-white flex flex-col items-center py-8 gap-8 rounded-3xl">
                 <h1 className="text-white text-[24px] md:text-[40px] not-italic font-bold leading-[normal] tracking-[2px]">
                     {isLogin ? "Log In here" : "Register here"}</h1>
-                <form className='flex flex-col items-center w-2/3 gap-2 lg:gap-6 my-auto'>
+                <form onSubmit={onFormSubmit} className='flex flex-col items-center w-2/3 gap-2 lg:gap-6 my-auto'>
                     <div className="w-full flex flex-col lg:flex-row justify-between gap-4">
                         {isLogin ? (
-                            <InputField label="Username or Email Address*" placeholder="JohnDoe" customClasses="w-full" type="text" />
+                            <InputField label="Username or Email Address*" placeholder="JohnDoe" customClasses="w-full" type="text"
+                                name="username" handleChange={handleChange}
+                            />
                         ) : (
-                            <InputField label="Username*" placeholder="JohnDoe" customClasses="w-full" type="text" />
+                            <InputField label="Username*" placeholder="JohnDoe" customClasses="w-full" type="text"
+                                name="username" handleChange={handleChange}
+                            />
                         )}
                     </div>
                     {isLogin ? (
-                        <InputField label="Password*" placeholder="******" customClasses="w-full" type="password" />
+                        <InputField label="Password*" placeholder="******" customClasses="w-full" type="password"
+                            name="password" handleChange={handleChange}
+                        />
                     ) : (
                         <>
-                            <InputField label="Email Address*" placeholder="johndoe@gmail.com" customClasses="w-full" type="email" />
-                            <InputField label="Password*" placeholder="******" customClasses="w-full" type="password" />
+                            <InputField label="Email Address*" placeholder="johndoe@gmail.com" customClasses="w-full" type="email"
+                                name="email" handleChange={handleChange}
+                            />
+                            <InputField label="Password*" placeholder="******" customClasses="w-full" type="password"
+                                name="password" handleChange={handleChange}
+                            />
                         </>
                     )}
                     <div className="flex flex-col items-center gap-8">
