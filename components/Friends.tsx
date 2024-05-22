@@ -6,16 +6,16 @@ const Friends = ({ name, nickname, profilePic, isOnline, hasIcon, isPinned, newM
         <div className='h-auto flex w-full items-center justify-center flex-col'>
             {/* ONLINE-STATUS, PROFILE PICTURE */}
 
-            <div>
-                <div className='flex justify-around items-center'>
-                    <div className="flex items-center gap-[1rem]">
+            <div className="w-[70%]">
+                <div className='flex items-center w-full'>
+                    <div className="flex items-center w-[70%] justify-between">
                         <div className='relative flex items-center'>
                             <Image src={profilePic} alt="profile" width={50} height={50} className="rounded-full" />
                             {isOnline && <span className="bg-green-500 rounded-full h-3 w-3 inline-block absolute z-30 left-[75%] top-[70%]"></span>}
                         </div>
 
                         {/* NAME, PINNED */}
-                        <div className='flex flex-col'>
+                        <div className='flex flex-col w-full'>
                             <span className='text-white'>
                                 {isPinned ? "📌" : ""}
                                 {nickname ? nickname : name}

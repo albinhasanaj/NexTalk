@@ -13,8 +13,6 @@ const AuthForm = ({ isLogin }: AuthFormProps) => {
         password: ""
     });
 
-
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValues({
             ...values,
@@ -43,7 +41,7 @@ const AuthForm = ({ isLogin }: AuthFormProps) => {
                     body: JSON.stringify(values)
                 });
                 if (response.ok) {
-                    console.log("User created successfully");
+                    alert("User created successfully");
                 }
             } catch (error) {
                 console.log(error);

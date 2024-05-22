@@ -2,6 +2,8 @@ import React from 'react';
 import Searchbar from './Searchbar';
 import Friends from './Friends';
 
+import { friends } from '@/constants/friendList';
+
 const ChatpageSidebar = () => {
     return (
         <div
@@ -13,11 +15,18 @@ const ChatpageSidebar = () => {
             >
                 {/* LEFT SIDE */}
                 {/* <Searchbar /> */}
-                <Friends nickname='Alyisa Bravery' name="Peter" profilePic='/profile/moana.png' isOnline={true} hasIcon='' isPinned={true} newMessages={10} />
-                <Friends nickname='Alyisa Bravery' name="Peter" profilePic='/profile/moana.png' isOnline={true} hasIcon='' isPinned={true} newMessages={10} />
-                <Friends nickname='Alyisa Bravery' name="Peter" profilePic='/profile/moana.png' isOnline={true} hasIcon='' isPinned={true} newMessages={10} />
-                <Friends nickname='Alyisa Bravery' name="Peter" profilePic='/profile/moana.png' isOnline={true} hasIcon='' isPinned={true} newMessages={10} />
-                <Friends nickname='Alyisa Bravery' name="Peter" profilePic='/profile/moana.png' isOnline={true} hasIcon='' isPinned={true} newMessages={10} />
+                {friends.map((friend, index) => (
+                    <Friends
+                        key={index}
+                        name={friend.name}
+                        nickname={friend.nickname}
+                        profilePic={friend.profilePic}
+                        isOnline={friend.isOnline}
+                        hasIcon={friend.hasIcon}
+                        isPinned={friend.isPinned}
+                        newMessages={friend.newMessages}
+                    />
+                ))}
             </div>
 
 

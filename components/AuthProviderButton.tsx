@@ -1,9 +1,19 @@
+import { signIn } from 'next-auth/react';
 import Image from 'next/image'
 
-const AuthProviderButton = ({ provider }: { provider: "google" | "github" }) => {
+const AuthProviderButton = ({ provider }: { provider: "github" | "google" }) => {
+
+    const handleClick = async () => {
+        try {
+            await signIn(provider, { redirect: false, callbackUrl: "/chatpage" });
+        } catch (error) {
+            console.error("Error signing in with ", error);
+        }
+    }
+
     return (
         <button className="flex justify-center items-center py-2 px-4 gap-2 bg-[#D9D9D9] bg-opacity-5 border-[1px] border-white rounded-[5px]"
-            onClick={() => { console.log("implement signup here") }}
+            onClick={handleClick}
             type="button"
         >
             <Image src={`/icons/${provider}.svg`}

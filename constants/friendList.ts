@@ -4,7 +4,7 @@ export const friends = [
     {
         name: "Alyisa Bravery",
         nickname: "",
-        profilePic: "/images/profile/alysia.png",
+        profilePic: "/profile/alysia.png",
         isOnline: true,
         hasIcon: "",
         isPinned: true,
@@ -13,7 +13,7 @@ export const friends = [
     {
         name: "Charlotte Hale",
         nickname: "Charlotte demon",
-        profilePic: "/images/profile/charlotte.png",
+        profilePic: "/profile/charlotte.png",
         isOnline: false,
         hasIcon: "Demon",
         isPinned: false,
@@ -22,16 +22,16 @@ export const friends = [
     {
         name: "Moana Waialiki",
         nickname: "Moana Jungle",
-        profilePic: "/images/profile/moana.png",
+        profilePic: "/profile/moana.png",
         isOnline: true,
         hasIcon: "",
         isPinned: false,
-        newMessages: 0,
+        newMessages: 1,
     },
     {
         name: "David Goliath",
         nickname: "Davey",
-        profilePic: "/images/profile/davey.png",
+        profilePic: "/profile/davey.png",
         isOnline: false,
         hasIcon: "",
         isPinned: false,
