@@ -1,36 +1,24 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# NexTalk
 
-## Getting Started
+NexTalk is an upcoming real-time chat application built using Next.js, featuring full-stack capabilities with a focus on modern web technologies. This project is designed to demonstrate real-time communication using WebSockets and includes robust user authentication using GitHub & Google OAuth.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Real-Time Communication**: Built with Socket.IO for efficient real-time interactions.
+- **User Authentication**: Integrates GitHub and Google authentication to manage user identity securely.
+- **Responsive Design**: Optimized for both mobile and desktop platforms.
+- **Modern Tech Stack**: Utilizes Next.js, Prisma ORM with MySQL, Tailwind CSS, and TypeScript.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Project Objectives
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+This project is not just a demonstration of technical skills but also a platform for growth and education in the field of web development. Key objectives include:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- **Collaborative Development**: Enhancing our ability to work as a team in a collaborative environment, using tools such as Git for version control and conducting code reviews via GitHub.
+- **Skill Enhancement**: Each participant focuses on strengthening their full-stack competencies.
+- **Real-World Application**: By building a product intended for real-world use, we tackle the challenges that come with designing functional, user-friendly interfaces and robust backend systems.
 
-## Learn More
+## Learning Outcomes
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- **Hands-On Experience**: Contributors gain practical experience with a range of technologies and practices, from setting up OAuth with major providers to deploying real-time communication services.
+- **Code Reviews and Mentoring**: Regular code reviews and mentoring sessions help in refining skills and understanding complex concepts in software development.
+- **Portfolio Development**: This project serves as a key portfolio piece that demonstrates our ability to design, develop, and deploy a full-scale application.
