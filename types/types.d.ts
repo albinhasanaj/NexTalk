@@ -20,3 +20,9 @@ declare interface FriendProps {
     isPinned: boolean;
     newMessages: number;
 };
+
+declare interface JwtPayload {
+    id: string;
+    username: string;
+    email: string;
+}

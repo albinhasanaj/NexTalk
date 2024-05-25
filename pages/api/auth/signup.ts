@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import bcrypt from "bcrypt";
 import prisma from '@/lib/prisma';
 import { randomUUID } from 'crypto';
+import { generateToken } from '@/lib/generateAndValidateToken';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== 'POST') {
@@ -42,6 +43,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 password: hashedPassword
             }
         });
+
+        const token = generateToken({ id: userId, username, email });
+        res.setHeader('Set-Cookie', `token=${token}; Path=/; HttpOnly; SameSite=Strict; Max-Age=2592000`); // 30 days
+
         return res.status(201).json({ message: 'User created successfully', code: 201, data: user });
 
     } catch (error) {
