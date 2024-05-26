@@ -5,6 +5,7 @@ import AuthProviderButtons from "./AuthProviderButtons";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const AuthForm = ({ isLogin }: AuthFormProps) => {
     const router = useRouter();
@@ -34,12 +35,18 @@ const AuthForm = ({ isLogin }: AuthFormProps) => {
                     body: JSON.stringify(values)
                 });
 
-                if (response.ok) {
-                    alert("Logged in successfully");
-                    router.push("/chatpage");
-                }
+                const data = await response.json();
+
+                if (!response.ok) throw new Error(data.message || "Something went wrong");
+
+                toast.success(data.message);
+                router.push("/chatpage");
             } catch (error) {
-                console.log(error);
+                if (error instanceof Error) {
+                    toast.error(error.message);
+                } else {
+                    toast.error("An unknown error occurred.");
+                }
             }
 
         } else {
@@ -53,12 +60,18 @@ const AuthForm = ({ isLogin }: AuthFormProps) => {
 
                     body: JSON.stringify(values)
                 });
-                if (response.ok) {
-                    alert("User created successfully");
-                    router.push("/chatpage");
-                }
+
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.message || "Something went wrong");
+
+                toast.success(data.message);
+                router.push("/chatpage");
             } catch (error) {
-                console.log(error);
+                if (error instanceof Error) {
+                    toast.error(error.message);
+                } else {
+                    toast.error("An unknown error occurred.");
+                }
             }
         }
     };

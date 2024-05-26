@@ -1,13 +1,19 @@
 import { signIn } from 'next-auth/react';
 import Image from 'next/image'
+import toast from 'react-hot-toast';
 
 const AuthProviderButton = ({ provider }: { provider: "github" | "google" }) => {
 
     const handleClick = async () => {
         try {
             await signIn(provider, { redirect: false, callbackUrl: "/chatpage" });
+            toast.success(`Signed in with ${provider[0].toUpperCase() + provider.slice(1)}`);
         } catch (error) {
-            console.error("Error signing in with ", error);
+            if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error("An unknown error occurred.");
+            }
         }
     }
 
