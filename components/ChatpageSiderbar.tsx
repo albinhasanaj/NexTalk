@@ -10,22 +10,49 @@ import NoChatSelected from './NoChatSelected';
 import Settings from './Settings';
 import Image from 'next/image';
 import ChatSelected from './ChatSelected';
+import Logout from './Logout';
 
 const ChatpageSidebar = () => {
     const [view, setView] = useState('NoChatSelected');
+    const [prevView, setPrevView] = useState('');
 
-    const handleToggleView = () => {
-        setView((prevView) => (prevView === 'NoChatSelected' ? 'Settings' : 'NoChatSelected'));
+    const settingsSelected = () => {
+        if (view === 'Settings') {
+            setView('NoChatSelected');
+        } else {
+            setPrevView(view);
+            setView('Settings');
+        }
+    };
+
+    const handleChatSelected = () => {
+        if (view === 'ChatSelected') {
+            setView('NoChatSelected');
+        } else {
+            setPrevView(view);
+            setView('ChatSelected');
+        }
+    };
+
+    const handleLogoutSelected = () => {
+        if (view === 'Logout') {
+            setView('NoChatSelected');
+        } else {
+            setPrevView(view);
+            setView('Logout');
+        }
     };
 
     const toggleView = (view: string) => {
         switch (view) {
             case 'NoChatSelected':
                 return <NoChatSelected />;
-            case 'Settings':
-                return <Settings />;
             case 'ChatSelected':
                 return <ChatSelected />;
+            case 'Settings':
+                return <Settings />;
+            case 'Logout':
+                return <Logout />;
             default:
                 return <NoChatSelected />;
         }
@@ -52,6 +79,7 @@ const ChatpageSidebar = () => {
                             hasIcon={friend.hasIcon}
                             isPinned={friend.isPinned}
                             newMessages={friend.newMessages}
+                            handleClick={handleChatSelected}
                         />
                     ))}
                 </div>
@@ -62,7 +90,7 @@ const ChatpageSidebar = () => {
                         height={40}
                         alt='Settings Icon'
                         className='cursor-pointer'
-                        onClick={handleToggleView}
+                        onClick={settingsSelected}
                     />
                     <Image
                         src='/icons/logout.svg'
@@ -70,6 +98,7 @@ const ChatpageSidebar = () => {
                         height={40}
                         alt='Logout Icon'
                         className='cursor-pointer'
+                        onClick={handleLogoutSelected}
                     />
                 </div>
             </div>

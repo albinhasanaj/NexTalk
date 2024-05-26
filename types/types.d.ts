@@ -19,6 +19,7 @@ declare interface FriendProps {
     hasIcon: string;
     isPinned: boolean;
     newMessages: number;
+    handleClick: () => void;
 };
 
 declare interface JwtPayload {

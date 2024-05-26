@@ -2,9 +2,9 @@ import Image from 'next/image'
 import React from 'react'
 import '../app/chat.css'
 
-const Friends = ({ name, nickname, profilePic, isOnline, hasIcon, isPinned, newMessages }: FriendProps) => {
+const Friends = ({ name, nickname, profilePic, isOnline, hasIcon, isPinned, newMessages, handleClick }: FriendProps) => {
     return (
-        <div className='h-auto flex w-full items-center justify-center flex-col relative group'>
+        <div onClick={handleClick} className='h-auto flex w-full items-center justify-center flex-col relative group'>
             {/* ONLINE-STATUS, PROFILE PICTURE */}
 
             <div className="w-[70%] ">
