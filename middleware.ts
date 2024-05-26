@@ -14,7 +14,7 @@ export default async function middleware(req: NextRequest) {
 
     // If user is logged in and trying to access login or signup pages
     if ((token || session) && (path === "/login" || path === "/signup")) {
-        url.pathname = '/chatpage'; // Redirect to the dashboard or another appropriate route
+        url.pathname = '/chatpage'; // Redirect to chat page if logged in
         return NextResponse.redirect(url);
     }
 

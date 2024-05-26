@@ -4,8 +4,10 @@ import InputField from "./InputField";
 import AuthProviderButtons from "./AuthProviderButtons";
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const AuthForm = ({ isLogin }: AuthFormProps) => {
+    const router = useRouter();
 
     const [values, setValues] = useState({
         username: "",
@@ -24,7 +26,18 @@ const AuthForm = ({ isLogin }: AuthFormProps) => {
         e.preventDefault();
         if (isLogin) {
             try {
-                // fetch to backend
+                const response = await fetch("/api/auth/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(values)
+                });
+
+                if (response.ok) {
+                    alert("Logged in successfully");
+                    router.push("/chatpage");
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -42,6 +55,7 @@ const AuthForm = ({ isLogin }: AuthFormProps) => {
                 });
                 if (response.ok) {
                     alert("User created successfully");
+                    router.push("/chatpage");
                 }
             } catch (error) {
                 console.log(error);
@@ -60,7 +74,8 @@ const AuthForm = ({ isLogin }: AuthFormProps) => {
                     <div className="w-full flex flex-col lg:flex-row justify-between gap-4">
                         {isLogin ? (
                             <InputField label="Username or Email Address*" placeholder="JohnDoe" customClasses="w-full" type="text"
-                                name="username" handleChange={handleChange}
+                                handleChange={handleChange}
+                                name="usermail"
                             />
                         ) : (
                             <InputField label="Username*" placeholder="JohnDoe" customClasses="w-full" type="text"
