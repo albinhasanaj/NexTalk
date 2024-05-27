@@ -64,11 +64,13 @@ const ChatpageSidebar = () => {
             style={{ backgroundImage: "url('/images/chatpagebg.png')" }}
         >
 
-            <div className="w-[350px] h-[750px] flex-shrink-0 rounded-l-3xl rounded-tr-none rounded-br-none rounded-bl-3xl border border-white/54 bg-white/7 backdrop-blur-[7.5px] flex flex-col justify-between bg-[rgba(255,255,255,0.07)] gap-10"
+            <div className="
+            hidden md:flex w-[300px] lg:w-[350px] h-[600px] lg:h-[750px] rounded-l-3xl rounded-tr-none rounded-br-none rounded-bl-3xl
+            flex-shrink-0 border border-white/54 bg-white/7 backdrop-blur-[7.5px] flex-col justify-between bg-[rgba(255,255,255,0.07)] gap-10"
             >
                 <Searchbar />
                 {/* LEFT SIDE */}
-                <div className='flex flex-col gap-10'>
+                <div className='flex flex-col gap-10 overflow-auto scrollbar'>
                     {friends.map((friend, index) => (
                         <Friends
                             key={index}
@@ -102,10 +104,10 @@ const ChatpageSidebar = () => {
                     />
                 </div>
             </div>
-
-            <div className="w-[400px] lg:w-[600px] h-[750px] flex-shrink-0 rounded-r-3xl rounded-tl-none rounded-bl-none rounded-tr-3xl border border-white/54 bg-white/7 backdrop-blur-[30px] flex items-center bg-[rgba(255,255,255,0.1)] flex-col text-white">
+            <div className=
+                "rounded-3xl md:rounded-r-3xl md:rounded-tl-none md:rounded-bl-none md:rounded-tr-3xl w-[400px] md:w[500px] lg:w-[600px] h-[750px] md:h-[600px] lg:h-[750px] flex-shrink-0 rounded-r-3xl rounded-tr-3xl border border-white/54 bg-white/7 backdrop-blur-[30px] flex items-center bg-[rgba(255,255,255,0.1)] flex-col text-white">
                 {/* RIGHT SIDE */}
-                <Navbar />
+                {view !== "NoChatSelected" ? <Navbar /> : null}
 
                 {/* TYPES OF VIEWS */}
                 {toggleView(view)}
