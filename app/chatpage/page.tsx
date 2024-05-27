@@ -1,14 +1,25 @@
-import ChatpageSidebar from '@/components/ChatpageSiderbar'
-import React from 'react'
-import { getSession } from 'next-auth/react'
-import { parseCookies } from 'nookies'
-import jwt from 'jsonwebtoken'
-import { GetServerSideProps, GetServerSidePropsContext } from 'next';
+"use client";
+import React, { useState } from 'react'
+import MainComponent from '@/components/MainComponent'
+import MainComponentSidebar from '@/components/MainComponentSidebar';
 
 // this has to be a protected route
 const ChatPage = () => {
+    const [view, setView] = useState('NoChatSelected');
+
     return (
-        <ChatpageSidebar />
+        <div
+            className="w-full h-[100vh] flex justify-center items-center bg-cover bg-no-repeat"
+            style={{ backgroundImage: "url('/images/chatpagebg.png')" }}
+        >
+            <MainComponentSidebar
+                view={view}
+                setView={setView}
+            />
+            <MainComponent
+                view={view}
+            />
+        </div>
     )
 }
 

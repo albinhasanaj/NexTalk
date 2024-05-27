@@ -27,3 +27,12 @@ declare interface JwtPayload {
     username: string;
     email: string;
 }
+
+declare interface MainComponentSidebarProps {
+    view: string;
+    setView: (view: string) => void;
+};
+
+declare interface MainComponentProps {
+    view: string;
+};
