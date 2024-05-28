@@ -1,3 +1,182 @@
 .group:hover .gear-icon {
     opacity: 1;
 }
+
+.effect {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0 3% 3% 0;
+}
+
+.effect.freeze {
+    display: flex;
+    animation: freezeEffect 3s ease-out;
+}
+
+.effect.fire {
+    display: flex;
+    animation: fireEffect 3s ease-out;
+}
+
+.effect.ufo {
+    display: flex;
+    animation: ufoEffect 3s ease-out;
+}
+
+.effect.confetti {
+    display: flex;
+    animation: confettiEffect 3s ease-out;
+}
+
+.effect.mystery {
+    display: flex;
+    animation: mysteryEffect 3s ease-out;
+}
+
+/* Freeze Effect */
+@keyframes freezeEffect {
+
+    0%,
+    100% {
+        background-color: transparent;
+    }
+
+    50% {
+        background-color: rgba(0, 191, 255, 0.15);
+    }
+}
+
+/* LÄGG TILL COOL FRYS EFFEKTER HÄR */
+.effect.freeze:before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: url('/path_to_snowflakes_image.png') center center / cover no-repeat;
+    opacity: 0.5;
+}
+
+/* Fire Effect */
+@keyframes fireEffect {
+
+    0%,
+    100% {
+        background-color: transparent;
+    }
+
+    50% {
+        background-color: rgba(255, 69, 0, 0.15);
+    }
+}
+
+
+/* LÄGG TILL COOL ELD EFFEKTER HÄR */
+.effect.fire:before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: url('/path_to_fire_image.png') center center / cover no-repeat;
+    opacity: 0.5;
+}
+
+/* UFO Effect */
+@keyframes ufoEffect {
+
+    0%,
+    100% {
+        background-color: transparent;
+    }
+
+    50% {
+        background-color: rgba(75, 0, 130, 0.15);
+    }
+}
+
+
+/* LÄGG TILL COOL UFO EFFEKTER HÄR */
+.effect.ufo:before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: url('/path_to_ufo_image.png') center center / cover no-repeat;
+    opacity: 0.5;
+}
+
+/* Confetti Effect */
+@keyframes confettiEffect {
+
+    0%,
+    100% {
+        background-color: transparent;
+    }
+
+    50% {
+        background-color: rgba(255, 215, 0, 0.15);
+    }
+}
+
+
+/* LÄGG TILL COOL KONFETTI EFFEKTER HÄR */
+.effect.confetti:before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: url('/path_to_confetti_image.png') center center / cover no-repeat;
+    opacity: 0.5;
+}
+
+/* Mystery Effect */
+@keyframes mysteryEffect {
+
+    0%,
+    100% {
+        background-color: transparent;
+    }
+
+    50% {
+        background-color: rgba(255, 20, 147, 0.15);
+    }
+}
+
+
+/* LÄGG TILL COOL MYSTERY EFFEKTER HÄR */
+.effect.mystery:before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: url('/path_to_mystery_image.png') center center / cover no-repeat;
+    opacity: 0.5;
+}
+
+.effect.show {
+    display: flex;
+}
+
+@keyframes throwEmojis {
+    0% {
+        transform: translate3d(0, 0, 0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate3d(var(--x), var(--y), 0) rotate(var(--r));
+        opacity: 0;
+    }
+}
+
+.emoji {
+    position: absolute;
+    font-size: 2rem;
+    animation: throwEmojis 1s forwards;
+}
