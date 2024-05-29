@@ -53,8 +53,8 @@ const Account = ({ name, nickname, profilePic, isOnline, hasIcon, isPinned: init
                                     <li><a>Set nickname</a></li>
                                     <li><a onClick={togglePin}>{isPinned ? 'Unpin chat' : 'Pin chat📌'}</a></li>
                                     <li>
-                                        <details open>
-                                            <summary>EMOJI</summary>
+                                        <details>
+                                            <summary className="">EMOJI</summary>
                                             <ul>
                                                 <li><a>1</a></li>
                                                 <li><a>2</a></li>
