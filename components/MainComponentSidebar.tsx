@@ -1,6 +1,6 @@
 "use client";
 import Searchbar from './Searchbar'
-import Accounts from './Accounts'
+import Account from './Account'
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
@@ -53,44 +53,42 @@ const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
             <Searchbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
             {/* LEFT SIDE */}
             <div className='flex flex-col h-full gap-10 scrollbar mb-auto overflow-auto'>
-                {/* if searching, display searched only, else display your Accounts */}
+                {/* if searching, display searched only, else display your Account */}
                 {searchResults.length > 0 ? (
                     <>
                         {searchResults.map((result, index) => (
-                            <Accounts
+                            <Account
                                 key={index}
                                 name={result.username}
-                                nickname=""
                                 profilePic={result.profilePic}
-                                isOnline={result.isOnline}
-                                hasIcon=''
-                                isPinned={false}
-                                newMessages={0}
                                 handleClick={() => { }}
+                                isFriend={false}
                             />
                         ))}
                     </>
                 ) : (
                     <>
-                        <Accounts
+                        <Account
                             name='John Doe'
                             nickname='JD'
                             profilePic="https://avatar.iran.liara.run/public?username=test"
                             isOnline={true}
-                            hasIcon='📌'
+                            hasIcon=''
                             isPinned={true}
                             newMessages={1}
                             handleClick={handleChatSelected}
+                            isFriend={true}
                         />
-                        <Accounts
+                        <Account
                             name='John Doe'
-                            nickname='JD'
+                            nickname=''
                             profilePic="https://avatar.iran.liara.run/public?username=test"
                             isOnline={true}
-                            hasIcon='📌'
-                            isPinned={true}
-                            newMessages={1}
+                            hasIcon=''
+                            isPinned={false}
+                            newMessages={0}
                             handleClick={handleChatSelected}
+                            isFriend={true}
                         />
                     </>
                 )}

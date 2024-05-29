@@ -11,14 +11,15 @@ declare interface InputFieldProps {
     handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-declare interface FriendProps {
+declare interface AccountProps {
     name: string;
-    nickname: string;
+    nickname?: string;
     profilePic: string;
-    isOnline: boolean;
-    hasIcon: string;
-    isPinned: boolean;
-    newMessages: number;
+    isOnline?: boolean;
+    hasIcon?: string;
+    isPinned?: boolean;
+    newMessages?: number;
+    isFriend: boolean;
     handleClick: () => void;
 };
 

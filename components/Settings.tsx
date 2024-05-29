@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import React from 'react'
 
+
 const Settings = () => {
     return (
         <div className='flex flex-col items-center gap-4'>
