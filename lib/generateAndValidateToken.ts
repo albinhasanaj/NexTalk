@@ -1,5 +1,6 @@
 import jwt, { VerifyErrors } from 'jsonwebtoken';
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
+import { getSession } from 'next-auth/react';
 
 
 // Function to generate JWT
@@ -36,4 +37,13 @@ export const authenticateToken = (req: NextApiRequestWithUser, res: NextApiRespo
             return res.status(403).json({ message: 'Token is invalid' });
         }
     });
+};
+
+export const decodeToken = (token: string) => {
+    try {
+        return jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
 };

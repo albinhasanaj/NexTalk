@@ -50,6 +50,8 @@ export const authOptions: NextAuthOptions = {
                 // Generate a UUID for the user
                 const id = randomUUID();
 
+                const profilePic = `https://avatar.iran.liara.run/public?username=${username}`
+
                 // Create the new user in the database
                 const newUser = await prisma.user.create({
                     data: {
@@ -57,6 +59,7 @@ export const authOptions: NextAuthOptions = {
                         githubId: githubId, // Storing GitHub ID as string
                         username,
                         email: githubUser.email || "",
+                        profilePic
                     }
                 });
 
@@ -65,10 +68,18 @@ export const authOptions: NextAuthOptions = {
                 return false;
             }
         },
-        async jwt({ token, user, account, profile, isNewUser }) {
+        async jwt({ token, user }) {
+            // Add id to the token
+            if (user) {
+                token.id = user.id as string;
+            }
             return token;
         },
-        async session({ session, token, user }) {
+        async session({ session, token }) {
+            // Add id to the session
+            if (session.user) {
+                session.user.id = token.id as string;
+            }
             return session;
         }
     },

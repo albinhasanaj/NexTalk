@@ -26,6 +26,7 @@ declare interface JwtPayload {
     id: string;
     username: string;
     email: string;
+    provider?: string;
 }
 
 declare interface MainComponentSidebarProps {
@@ -35,4 +36,15 @@ declare interface MainComponentSidebarProps {
 
 declare interface MainComponentProps {
     view: string;
+};
+
+declare interface SearchbarProps {
+    searchQuery: string;
+    setSearchQuery: (searchQuery: string) => void;
+};
+
+declare interface SearchResults {
+    username: string;
+    profilePic: string;
+    isOnline: boolean;
 };

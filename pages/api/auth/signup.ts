@@ -35,12 +35,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const hashedPassword = await bcrypt.hash(password, 10);
         const userId = randomUUID();
 
+        const profilePic = `https://avatar.iran.liara.run/public?username=${username}`
+
         const user = await prisma.user.create({
             data: {
                 id: userId,
                 username,
                 email,
-                password: hashedPassword
+                password: hashedPassword,
+                profilePic
             }
         });
 

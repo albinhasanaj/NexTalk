@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import '../app/chat.css'
 
 
-const Friends = ({ name, nickname, profilePic, isOnline, hasIcon, isPinned: initialIsPinned, newMessages, handleClick }: FriendProps) => {
+const Accounts = ({ name, nickname, profilePic, isOnline, hasIcon, isPinned: initialIsPinned, newMessages, handleClick }: FriendProps) => {
     const [isPinned, setIsPinned] = useState(initialIsPinned);
 
     const togglePin = () => {
@@ -11,7 +11,7 @@ const Friends = ({ name, nickname, profilePic, isOnline, hasIcon, isPinned: init
     };
 
     return (
-        <div className='flex flex-col items-center w-full '>
+        <div className='flex flex-col items-center w-full'>
             {/* ONLINE-STATUS, PROFILE PICTURE */}
             <div className="flex justify-between items-center w-[90%] my-4 " >
                 <div onClick={handleClick} className='flex items-center hover:bg-white hover:bg-opacity-10 hover:rounded-full w-full cursor-pointer'>
@@ -65,4 +65,4 @@ const Friends = ({ name, nickname, profilePic, isOnline, hasIcon, isPinned: init
     )
 }
 
-export default Friends
+export default Accounts
