@@ -11,9 +11,9 @@ const Accounts = ({ name, nickname, profilePic, isOnline, hasIcon, isPinned: ini
     };
 
     return (
-        <div className='flex flex-col items-center w-full'>
+        <div className='flex flex-col items-center w-full gap-4'>
             {/* ONLINE-STATUS, PROFILE PICTURE */}
-            <div className="flex justify-between items-center w-[90%] my-4 " >
+            <div className="flex justify-between items-center w-[90%]" >
                 <div onClick={handleClick} className='flex items-center hover:bg-white hover:bg-opacity-10 hover:rounded-full w-full cursor-pointer'>
                     <div className='relative mr-3'>
                         <Image src={profilePic} alt="profile" width={50} height={50} className="rounded-full" />

@@ -52,7 +52,7 @@ const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
         >
             <Searchbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
             {/* LEFT SIDE */}
-            <div className='flex flex-col gap-10 overflow-auto scrollbar mb-auto'>
+            <div className='flex flex-col h-full gap-10 scrollbar mb-auto overflow-auto'>
                 {/* if searching, display searched only, else display your Accounts */}
                 {searchResults.length > 0 ? (
                     <>
@@ -72,6 +72,16 @@ const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
                     </>
                 ) : (
                     <>
+                        <Accounts
+                            name='John Doe'
+                            nickname='JD'
+                            profilePic="https://avatar.iran.liara.run/public?username=test"
+                            isOnline={true}
+                            hasIcon='📌'
+                            isPinned={true}
+                            newMessages={1}
+                            handleClick={handleChatSelected}
+                        />
                         <Accounts
                             name='John Doe'
                             nickname='JD'
