@@ -4,9 +4,9 @@ import React, { useState } from 'react'
 import '../app/chat.css'
 import { GrUserAdd } from "react-icons/gr";
 import { GoGear } from "react-icons/go";
+import toast from 'react-hot-toast';
 
-
-const Account = ({ username, nickname, profilePic, isOnline, hasIcon, isPinned: initialIsPinned, newMessages, handleClick, isFriend, id }: AccountProps) => {
+const Account = ({ username, nickname, profilePic, isOnline, hasIcon, isPinned: initialIsPinned, newMessages, handleClick, isFriend, id, refreshFriends }: AccountProps) => {
     const [isPinned, setIsPinned] = useState(initialIsPinned);
 
     const togglePin = () => {
@@ -14,8 +14,6 @@ const Account = ({ username, nickname, profilePic, isOnline, hasIcon, isPinned: 
     };
 
     const handleAddFriend = async () => {
-        // Add friend logic
-        // fetch to database with id, add to database
         const friendId = id;
         try {
             const response = await fetch('/api/friends/addFriend', {
@@ -26,13 +24,43 @@ const Account = ({ username, nickname, profilePic, isOnline, hasIcon, isPinned: 
                 credentials: 'include',
                 body: JSON.stringify({ friendId }),
             });
-            const data = await response.json();
-            console.log(data);
+
+            if (!response.ok) {
+                throw new Error('Failed to add friend');
+            }
+
+            toast.success('Friend added successfully');
+        } catch (error) {
+            toast.error((error as Error).message);
+            console.error(error);
+        }
+    };
+
+    const handleUnfriend = async () => {
+        const friendId = id;
+        try {
+            const response = await fetch('/api/friends/removeFriend', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ friendId }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to remove friend');
+            }
+
+            toast.success('Friend removed successfully');
+            if (refreshFriends) {
+                refreshFriends();
+            }
 
         } catch (error) {
             console.error(error);
         }
-    };
+    }
 
     return (
         <div className='flex flex-col items-center w-full gap-4'>
@@ -84,7 +112,9 @@ const Account = ({ username, nickname, profilePic, isOnline, hasIcon, isPinned: 
                                             </ul>
                                         </details>
                                     </li>
-                                    <li><a>Unfriend</a></li>
+                                    <li><a
+                                        onClick={handleUnfriend}
+                                    >Unfriend</a></li>
                                 </ul>
                             </>
                         )
@@ -94,8 +124,6 @@ const Account = ({ username, nickname, profilePic, isOnline, hasIcon, isPinned: 
                                         <li><a
                                             onClick={handleAddFriend}
                                         >Add friend</a></li>
-                                        <li><a>Block</a></li>
-                                        <li><a>Report</a></li>
                                     </ul>
                                 </>
                             )}

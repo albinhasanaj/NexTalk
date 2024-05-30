@@ -9,17 +9,6 @@ const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [friends, setFriends] = useState<AccountProps[]>([]);
 
-    useEffect(() => {
-        const fetchFriends = async () => {
-            const response = await fetch('/api/friends/getFriends');
-            const data = await response.json();
-            console.log(data)
-            setFriends(data.data);
-        };
-
-        fetchFriends();
-    }, []);
-
     const settingsSelected = () => {
         if (view === 'Settings') {
             setView('NoChatSelected');
@@ -52,11 +41,27 @@ const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
                 setSearchResults(data.data);
             } else {
                 setSearchResults([]);
+                fetchFriends();
             }
         };
 
         fetchSearchResults();
     }, [searchQuery]);
+
+    const fetchFriends = async () => {
+        const response = await fetch('/api/friends/getFriends');
+        const data = await response.json();
+        console.log(data)
+        setFriends(data.data);
+    };
+
+    useEffect(() => {
+        fetchFriends();
+    }, []);
+
+    const refreshFriends = () => {
+        fetchFriends();
+    };
 
     return (
         <div className="hidden md:flex w-[300px] lg:w-[350px] h-[600px] lg:h-[750px] rounded-l-3xl rounded-tr-none rounded-br-none rounded-bl-3xl flex-shrink-0 border border-white/54 bg-white/7 backdrop-blur-[7.5px] flex-col justify-between bg-[rgba(255,255,255,0.07)] gap-10"
@@ -92,6 +97,7 @@ const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
                                 handleClick={handleChatSelected}
                                 isFriend={true}
                                 id={friend.id}
+                                refreshFriends={refreshFriends}
                             />
                         ))}
                     </>

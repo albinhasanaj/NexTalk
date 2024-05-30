@@ -22,6 +22,7 @@ declare interface AccountProps {
     isFriend: boolean;
     handleClick: () => void;
     id: string;
+    refreshFriends?: () => void;
 };
 
 declare interface JwtPayload {
