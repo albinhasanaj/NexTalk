@@ -6,7 +6,7 @@ import { GrUserAdd } from "react-icons/gr";
 import { GoGear } from "react-icons/go";
 
 
-const Account = ({ name, nickname, profilePic, isOnline, hasIcon, isPinned: initialIsPinned, newMessages, handleClick, isFriend, id }: AccountProps) => {
+const Account = ({ username, nickname, profilePic, isOnline, hasIcon, isPinned: initialIsPinned, newMessages, handleClick, isFriend, id }: AccountProps) => {
     const [isPinned, setIsPinned] = useState(initialIsPinned);
 
     const togglePin = () => {
@@ -45,7 +45,7 @@ const Account = ({ name, nickname, profilePic, isOnline, hasIcon, isPinned: init
                     </div>
                     <div className='flex flex-col'>
                         <div className='flex items-center text-white text-nowrap relative'>
-                            <span>{nickname ? nickname : name}</span>
+                            <span>{nickname ? nickname : username}</span>
                             {isPinned && <sup className="absolute left-[100%] top-[10%]">📌</sup>}
                         </div>
                         {isFriend && (

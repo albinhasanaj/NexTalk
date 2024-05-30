@@ -12,7 +12,7 @@ declare interface InputFieldProps {
 };
 
 declare interface AccountProps {
-    name: string;
+    username: string;
     nickname?: string;
     profilePic: string;
     isOnline?: boolean;

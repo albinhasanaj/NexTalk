@@ -70,7 +70,7 @@ const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
                         {searchResults.map((result) => (
                             <Account
                                 key={result.id}
-                                name={result.username}
+                                username={result.username}
                                 profilePic={result.profilePic}
                                 handleClick={() => { }}
                                 isFriend={false}
@@ -83,7 +83,7 @@ const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
                         {friends.map((friend) => (
                             <Account
                                 key={friend.id}
-                                name={friend.username}
+                                username={friend.username}
                                 profilePic={friend.profilePic}
                                 isOnline={true}
                                 hasIcon=''
