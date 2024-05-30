@@ -19,5 +19,3 @@ CREATE TABLE friendship (
     CONSTRAINT fk_user1 FOREIGN KEY (user1_id) REFERENCES user(id) ON DELETE CASCADE,
     CONSTRAINT fk_user2 FOREIGN KEY (user2_id) REFERENCES user(id) ON DELETE CASCADE
 );
---@block
-DROP TABLE user;

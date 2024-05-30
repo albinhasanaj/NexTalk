@@ -48,7 +48,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             }
         });
 
-        // console.log('Friends:', friendDetails);
+        console.log('Friends:', friendDetails);
         return res.status(200).json({ data: friendDetails });
     } catch (error) {
         console.error('Failed to retrieve friends:', error);
