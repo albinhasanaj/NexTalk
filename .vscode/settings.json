@@ -11,20 +11,7 @@
             "driver": "MySQL",
             "name": "nex_talk_dev",
             "database": "nex_talk_dev",
-            "username": "nextalk_dev"
-        },
-        {
-            "mysqlOptions": {
-                "authProtocol": "default",
-                "enableSsl": "Disabled"
-            },
-            "previewLimit": 50,
-            "server": "localhost",
-            "port": 3306,
-            "driver": "MySQL",
-            "name": "nex_talk_dev",
-            "database": "nex_talk_dev",
             "username": "root"
-        }
+        },
     ]
 }
