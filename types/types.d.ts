@@ -21,6 +21,7 @@ declare interface AccountProps {
     newMessages?: number;
     isFriend: boolean;
     handleClick: () => void;
+    id: string;
 };
 
 declare interface JwtPayload {
@@ -48,4 +49,5 @@ declare interface SearchResults {
     username: string;
     profilePic: string;
     isOnline: boolean;
+    id: string;
 };

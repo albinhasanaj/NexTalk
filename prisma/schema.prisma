@@ -8,10 +8,23 @@ datasource db {
 }
 
 model User {
-  id         String  @id @default(uuid())
-  githubId   String? @unique
-  username   String  @unique
-  email      String  @unique
+  id         String   @id @default(uuid())
+  githubId   String?  @unique
+  username   String   @unique
+  email      String   @unique
   password   String?
-  profilePic String
+  profilePic String?
+  friends    Friend[] @relation("UserFriends")
+  befriended Friend[] @relation("UserBefriended")
+}
+
+model Friend {
+  id        Int      @id @default(autoincrement())
+  user1     User     @relation(name: "UserFriends", fields: [user1Id], references: [id])
+  user1Id   String
+  user2     User     @relation(name: "UserBefriended", fields: [user2Id], references: [id])
+  user2Id   String
+  createdAt DateTime @default(now())
+
+  @@unique([user1Id, user2Id])
 }

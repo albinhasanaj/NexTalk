@@ -7,6 +7,18 @@ import { useEffect, useState } from 'react';
 const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
     const [searchResults, setSearchResults] = useState<SearchResults[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
+    const [friends, setFriends] = useState<AccountProps[]>([]);
+
+    useEffect(() => {
+        const fetchFriends = async () => {
+            const response = await fetch('/api/friends/getFriends');
+            const data = await response.json();
+            console.log(data)
+            setFriends(data.data);
+        };
+
+        fetchFriends();
+    }, []);
 
     const settingsSelected = () => {
         if (view === 'Settings') {
@@ -38,7 +50,6 @@ const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
                 const response = await fetch(`/api/friends/search?query=${encodeURIComponent(searchQuery)}`);
                 const data = await response.json();
                 setSearchResults(data.data);
-                console.log(data.data);
             } else {
                 setSearchResults([]);
             }
@@ -56,40 +67,33 @@ const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
                 {/* if searching, display searched only, else display your Account */}
                 {searchResults.length > 0 ? (
                     <>
-                        {searchResults.map((result, index) => (
+                        {searchResults.map((result) => (
                             <Account
-                                key={index}
+                                key={result.id}
                                 name={result.username}
                                 profilePic={result.profilePic}
                                 handleClick={() => { }}
                                 isFriend={false}
+                                id={result.id}
                             />
                         ))}
                     </>
                 ) : (
                     <>
-                        <Account
-                            name='John Doe'
-                            nickname='JD'
-                            profilePic="https://avatar.iran.liara.run/public?username=test"
-                            isOnline={true}
-                            hasIcon=''
-                            isPinned={true}
-                            newMessages={1}
-                            handleClick={handleChatSelected}
-                            isFriend={true}
-                        />
-                        <Account
-                            name='John Doe'
-                            nickname=''
-                            profilePic="https://avatar.iran.liara.run/public?username=test"
-                            isOnline={true}
-                            hasIcon=''
-                            isPinned={false}
-                            newMessages={0}
-                            handleClick={handleChatSelected}
-                            isFriend={true}
-                        />
+                        {friends.map((friend) => (
+                            <Account
+                                key={friend.id}
+                                name={friend.username}
+                                profilePic={friend.profilePic}
+                                isOnline={true}
+                                hasIcon=''
+                                isPinned={false}
+                                newMessages={0}
+                                handleClick={handleChatSelected}
+                                isFriend={true}
+                                id={friend.id}
+                            />
+                        ))}
                     </>
                 )}
 

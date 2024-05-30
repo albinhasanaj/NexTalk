@@ -1,47 +1,18 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/lib/prisma";
-import { getSession } from "next-auth/react";
-import cookie from 'cookie';
-import { decodeToken } from "@/lib/generateAndValidateToken";
+import { getUserId } from "@/lib/getUserId";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== 'GET') {
         return res.status(405).json({ message: 'Method Not Allowed' });
     }
 
-    let userId = '';
-    let isGithubUser = false;
-
-    // Get the user session from the nextauth header or cookie called token
-    let session = await getSession({ req });
-    if (session && session.user) {
-        userId = session.user.id as string;
-        isGithubUser = true;
-    } else {
-        const cookies = cookie.parse(req.headers.cookie || '');
-        const token = cookies.token;
-        if (!token) {
-            return res.status(401).json({ message: 'Unauthorized' });
-        }
-
-        try {
-            const decodedToken = decodeToken(token);
-            if (decodedToken) {
-                userId = decodedToken.id;
-            } else {
-                return res.status(403).json({ message: 'Forbidden', error: 'Invalid token' });
-            }
-        } catch (error) {
-            return res.status(500).json({ message: 'Internal server error', error: (error as Error).message });
-        }
+    const userId = await getUserId(req, res);
+    if (!userId) {
+        return res.status(401).json({ message: 'Unauthorized' });
     }
 
-    // Log the userId and isGithubUser for debugging
-    console.log("User ID:", userId);
-    console.log("Is GitHub User:", isGithubUser);
-
     const search = req.query.query as string;
-
     if (!search) {
         return res.status(400).json({ message: 'Bad request' });
     }

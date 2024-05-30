@@ -1,11 +1,11 @@
 "use client";
 import AuthSidebar from "./AuthSidebar";
 import InputField from "./InputField";
-import AuthProviderButtons from "./AuthProviderButtons";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import AuthProviderButton from "./AuthProviderButton";
 
 const AuthForm = ({ isLogin }: AuthFormProps) => {
     const router = useRouter();
@@ -120,7 +120,7 @@ const AuthForm = ({ isLogin }: AuthFormProps) => {
                             {isLogin ? "Sign In" : "Sign Up"}
                         </button>
                         {/* remember me checkbox */}
-                        <AuthProviderButtons />
+                        <AuthProviderButton provider="github" />
                         <div className="flex md:hidden">
                             <Link
                                 href={isLogin ? "/signup" : "/login"}

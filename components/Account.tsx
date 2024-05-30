@@ -1,3 +1,4 @@
+"use client";
 import Image from 'next/image'
 import React, { useState } from 'react'
 import '../app/chat.css'
@@ -5,11 +6,32 @@ import { GrUserAdd } from "react-icons/gr";
 import { GoGear } from "react-icons/go";
 
 
-const Account = ({ name, nickname, profilePic, isOnline, hasIcon, isPinned: initialIsPinned, newMessages, handleClick, isFriend }: AccountProps) => {
+const Account = ({ name, nickname, profilePic, isOnline, hasIcon, isPinned: initialIsPinned, newMessages, handleClick, isFriend, id }: AccountProps) => {
     const [isPinned, setIsPinned] = useState(initialIsPinned);
 
     const togglePin = () => {
         setIsPinned(!isPinned);
+    };
+
+    const handleAddFriend = async () => {
+        // Add friend logic
+        // fetch to database with id, add to database
+        const friendId = id;
+        try {
+            const response = await fetch('/api/friends/addFriend', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ friendId }),
+            });
+            const data = await response.json();
+            console.log(data);
+
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     return (
@@ -69,7 +91,9 @@ const Account = ({ name, nickname, profilePic, isOnline, hasIcon, isPinned: init
                             : (
                                 <>
                                     <ul tabIndex={0} className="menu bg-base-200 rounded-box dropdown-content z-[1] right-1 w-[150px]">
-                                        <li><a>Add friend</a></li>
+                                        <li><a
+                                            onClick={handleAddFriend}
+                                        >Add friend</a></li>
                                         <li><a>Block</a></li>
                                         <li><a>Report</a></li>
                                     </ul>
