@@ -10,6 +10,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Ensure you await the asynchronous getUserId function
     const userId = await getUserId(req, res);
     if (!userId) {
+        // clear any session cookies or token
+
         return res.status(401).json({ message: 'Unauthorized' });
     }
 

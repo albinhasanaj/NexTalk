@@ -59,3 +59,8 @@ declare interface ChatBubbleProps {
     profilePic: string;
     username: string;
 };
+
+declare interface Message {
+    senderId: string;
+    content: string;
+};

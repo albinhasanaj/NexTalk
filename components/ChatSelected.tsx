@@ -114,7 +114,7 @@ const ChatSelected = () => {
     return (
         <div className='flex flex-col w-full h-full justify-between relative overflow-hidden'>
             <div className="overflow-auto scrollbar px-7">
-                {messages.map((message, index) => (
+                {messages.map((message: Message, index: number) => (
                     <>
                         <ChatBubble
                             key={index}
