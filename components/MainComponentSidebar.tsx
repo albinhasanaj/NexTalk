@@ -3,11 +3,14 @@ import Searchbar from './Searchbar'
 import Account from './Account'
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { useFriendStore } from '@/store/useStore';
 
 const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
     const [searchResults, setSearchResults] = useState<SearchResults[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [friends, setFriends] = useState<AccountProps[]>([]);
+
+    const { setFriendId } = useFriendStore(state => ({ setFriendId: state.setFriendId }));
 
     const settingsSelected = () => {
         if (view === 'Settings') {
@@ -17,7 +20,8 @@ const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
         }
     };
 
-    const handleChatSelected = () => {
+    const handleChatSelected = (friendId: string) => {
+        setFriendId(friendId);
         if (view === 'ChatSelected') {
             setView('NoChatSelected');
         } else {
@@ -77,7 +81,6 @@ const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
                                 key={result.id}
                                 username={result.username}
                                 profilePic={result.profilePic}
-                                handleClick={() => { }}
                                 isFriend={false}
                                 id={result.id}
                             />
@@ -94,7 +97,7 @@ const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
                                 hasIcon=''
                                 isPinned={false}
                                 newMessages={0}
-                                handleClick={handleChatSelected}
+                                handleClick={() => handleChatSelected(friend.id)}
                                 isFriend={true}
                                 id={friend.id}
                                 refreshFriends={refreshFriends}

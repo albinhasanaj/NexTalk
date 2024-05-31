@@ -1,20 +1,19 @@
 "use client";
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../app/chat.css'
 import { GrUserAdd } from "react-icons/gr";
 import { GoGear } from "react-icons/go";
 import toast from 'react-hot-toast';
-
 const Account = ({ username, nickname, profilePic, isOnline, hasIcon, isPinned: initialIsPinned, newMessages, handleClick, isFriend, id, refreshFriends }: AccountProps) => {
     const [isPinned, setIsPinned] = useState(initialIsPinned);
+    const friendId = id;
 
     const togglePin = () => {
         setIsPinned(!isPinned);
     };
 
     const handleAddFriend = async () => {
-        const friendId = id;
         try {
             const response = await fetch('/api/friends/addFriend', {
                 method: 'POST',
@@ -37,7 +36,6 @@ const Account = ({ username, nickname, profilePic, isOnline, hasIcon, isPinned: 
     };
 
     const handleUnfriend = async () => {
-        const friendId = id;
         try {
             const response = await fetch('/api/friends/removeFriend', {
                 method: 'POST',

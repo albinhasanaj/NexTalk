@@ -20,7 +20,7 @@ declare interface AccountProps {
     isPinned?: boolean;
     newMessages?: number;
     isFriend: boolean;
-    handleClick: () => void;
+    handleClick?: () => void;
     id: string;
     refreshFriends?: () => void;
 };

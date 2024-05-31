@@ -12,7 +12,7 @@ const MainComponent = ({
             case 'NoChatSelected':
                 return <NoChatSelected />;
             case 'ChatSelected':
-                return <ChatSelected />;
+                return <ChatSelected />; 
             case 'Settings':
                 return <Settings />;
             case 'Logout':
