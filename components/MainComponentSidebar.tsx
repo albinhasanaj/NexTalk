@@ -10,7 +10,7 @@ const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [friends, setFriends] = useState<AccountProps[]>([]);
 
-    const { setFriendId } = useFriendStore(state => ({ setFriendId: state.setFriendId }));
+    const { setFriendId, setUsername } = useFriendStore(state => ({ setFriendId: state.setFriendId, setUsername: state.setUsername }));
 
     const settingsSelected = () => {
         if (view === 'Settings') {
@@ -20,8 +20,9 @@ const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
         }
     };
 
-    const handleChatSelected = (friendId: string) => {
+    const handleChatSelected = (friendId: string, username: string) => {
         setFriendId(friendId);
+        setUsername(username)
         if (view === 'ChatSelected') {
             setView('NoChatSelected');
         } else {
@@ -37,6 +38,13 @@ const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
         }
     };
 
+
+    const fetchFriends = async () => {
+        const response = await fetch('/api/friends/getFriends');
+        const data = await response.json();
+        setFriends(data.data);
+    };
+
     useEffect(() => {
         const fetchSearchResults = async () => {
             if (searchQuery) {
@@ -45,23 +53,15 @@ const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
                 setSearchResults(data.data);
             } else {
                 setSearchResults([]);
-                fetchFriends();
+                if (!friends.length) { // Fetch friends only if not already fetched or under specific conditions
+                    fetchFriends();
+                }
             }
         };
 
         fetchSearchResults();
-    }, [searchQuery]);
+    }, [searchQuery, friends.length]);
 
-    const fetchFriends = async () => {
-        const response = await fetch('/api/friends/getFriends');
-        const data = await response.json();
-        console.log(data)
-        setFriends(data.data);
-    };
-
-    useEffect(() => {
-        fetchFriends();
-    }, []);
 
     const refreshFriends = () => {
         fetchFriends();
@@ -97,7 +97,9 @@ const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
                                 hasIcon=''
                                 isPinned={false}
                                 newMessages={0}
-                                handleClick={() => handleChatSelected(friend.id)}
+                                handleClick={() => {
+                                    handleChatSelected(friend.id, friend.username);
+                                }}
                                 isFriend={true}
                                 id={friend.id}
                                 refreshFriends={refreshFriends}

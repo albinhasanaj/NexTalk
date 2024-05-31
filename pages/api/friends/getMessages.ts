@@ -30,14 +30,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 ]
             },
             orderBy: {
-                createdAt: 'asc'
+                createdAt: 'asc',
+            },
+            include: {
+                sender: true,
+                receiver: true
             }
+
         });
 
-        console.log('Messages:', messages);
+        // Enhance messages by adding isSender flag
+        const enhancedMessages = messages.map(message => ({
+            ...message,
+            isSender: message.senderId === userId  // Check if the logged-in user is the sender
+        }));
 
-        res.status(200).json({ messages });
+        // console.log the profilePic of the sender and receiver
+        console.log(enhancedMessages.map(message => message.sender.profilePic));
+
+        res.status(200).json({ messages: enhancedMessages });
     } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error' });
 
     }
 }

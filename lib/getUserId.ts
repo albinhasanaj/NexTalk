@@ -8,7 +8,6 @@ import { authOptions } from "@/pages/api/auth/[...nextauth]";
 export const getUserId = async (req: NextApiRequest, res: NextApiResponse) => {
     let userId = "";
     let session = await getServerSession(req, res, authOptions);
-    console.log("Session:", session)
     if (session && session.user) {
         userId = session.user.id as string;
         const user = await prisma.user.findFirst({

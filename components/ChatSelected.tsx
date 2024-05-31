@@ -40,24 +40,6 @@ const ChatSelected = () => {
         }
     }, [effect]);
 
-    useEffect(() => {
-        const fetchMessages = async () => {
-            try {
-                const response = await fetch(`/api/friends/getMessages?friendId=${friendId}`);
-                if (!response.ok) {
-                    throw new Error("Failed to fetch messages");
-                }
-
-                const data = await response.json();
-                setMessages(data.messages);
-            } catch (error) {
-                toast.error("Failed to fetch messages");
-            }
-        }
-
-        fetchMessages();
-
-    }, [friendId]);
 
     const getEffectBgColor = (effect: string) => {
         switch (effect) {
@@ -110,20 +92,41 @@ const ChatSelected = () => {
             toast.error("Failed to send message");
         }
     }
+    useEffect(() => {
+        const fetchMessages = async () => {
+            try {
+                const response = await fetch(`/api/friends/getMessages?friendId=${friendId}`);
+                if (!response.ok) {
+                    throw new Error("Failed to fetch messages");
+                }
+
+                const data = await response.json();
+                console.log("This is the profile_pic", data.messages[0].receiver.profilePic)
+                console.log("This is the profile_pic", data.messages[2].receiver.profilePic)
+                setMessages(data.messages);
+            } catch (error) {
+                toast.error("Failed to fetch messages");
+            }
+        }
+
+        if (friendId) {
+            fetchMessages();
+        }
+
+    }, [friendId]);
 
     return (
         <div className='flex flex-col w-full h-full justify-between relative overflow-hidden'>
             <div className="overflow-auto scrollbar px-7">
                 {messages.map((message: Message, index: number) => (
-                    <>
+                    <React.Fragment key={index}>
                         <ChatBubble
-                            key={index}
-                            username={message.senderId === friendId ? "Friend's Name" : "Your Name"}
-                            message={message.content} // Use message.content instead of message
-                            isSender={message.senderId !== friendId}
-                            profilePic="http://localhost:3000/_next/image?url=https%3A%2F%2Favatar.iran.liara.run%2Fpublic%3Fusername%3Dalbinhasanaj&w=64&q=75"
+                            username={message.isSender ? "You" : message.receiver.username}
+                            message={message.content}
+                            isSender={message.isSender}
+                            profilePic={message.sender.profilePic}
                         />
-                    </>
+                    </React.Fragment>
                 ))}
             </div>
             <div className={`effect show ${effect}`}></div>
