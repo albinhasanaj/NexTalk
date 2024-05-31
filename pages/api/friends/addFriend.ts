@@ -31,6 +31,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
     });
 
+
+
     if (existingFriend.length > 0) {
         return res.status(400).json({ message: 'Friend already added' });
     }
@@ -43,15 +45,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             }
         });
 
-        console.log("New friend:", newFriend);
-
         return res.status(201).json({ message: 'Friend added successfully', data: newFriend });
     } catch (error) {
         console.error("Failed to add friend:", error);
         return res.status(500).json({ message: 'Internal server error', error: (error as Error).message });
     }
-
-
-    return res.status(200).json({ message: 'Friend added successfully' });
-
 }

@@ -16,18 +16,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(401).json({ message: 'Unauthorized' });
     }
 
-    // access the database and remove the friend given the friendId
     try {
-        const friend = await prisma.friend.delete({
+        // Try deleting assuming user1Id is userId and user2Id is friendId
+        const friend = await prisma.friend.deleteMany({
             where: {
-                user1Id_user2Id: {
-                    user1Id: userId,
-                    user2Id: friendId
-                }
+                OR: [
+                    { user1Id: userId, user2Id: friendId },
+                    { user1Id: friendId, user2Id: userId }
+                ]
             }
         });
 
-        return res.status(200).json({ message: 'Friend removed successfully', data: friend });
+        if (friend.count > 0) {
+            return res.status(200).json({ message: 'Friend removed successfully' });
+        } else {
+            return res.status(404).json({ message: 'No friend found to remove' });
+        }
     } catch (error) {
         console.error("Failed to remove friend:", error);
         return res.status(500).json({ message: 'Internal server error', error: (error as Error).message });

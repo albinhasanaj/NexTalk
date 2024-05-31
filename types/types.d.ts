@@ -52,3 +52,10 @@ declare interface SearchResults {
     isOnline: boolean;
     id: string;
 };
+
+declare interface ChatBubbleProps {
+    message: string;
+    isSender: boolean;
+    profilePic: string;
+    username: string;
+};
