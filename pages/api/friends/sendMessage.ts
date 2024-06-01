@@ -18,6 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     try {
+        console.log("Sending message")
         const message = await prisma.message.create({
             data: {
                 content,

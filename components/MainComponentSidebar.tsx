@@ -10,9 +10,9 @@ const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [friends, setFriends] = useState<AccountProps[]>([]);
 
-    const { setFriendId, setUsername, setUserId } = useFriendStore(state => ({
+    const { setFriendId, setReceiverUsername, setUserId } = useFriendStore(state => ({
         setFriendId: state.setFriendId,
-        setUsername: state.setUsername,
+        setReceiverUsername: state.setReceiverUsername,
         setUserId: state.setUserId
     }));
 
@@ -24,9 +24,9 @@ const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
         }
     };
 
-    const handleChatSelected = (friendId: string, username: string) => {
+    const handleChatSelected = (friendId: string, receiverUsername: string) => {
         setFriendId(friendId);
-        setUsername(username);
+        setReceiverUsername(receiverUsername);
 
         if (view === 'ChatSelected') {
             setView('NoChatSelected');

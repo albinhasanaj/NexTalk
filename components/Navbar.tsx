@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useFriendStore } from '@/store/useStore'
 
 const Navbar = () => {
-    const { username } = useFriendStore(state => ({ username: state.username }))
+    const { username } = useFriendStore(state => ({ username: state.receiverUsername }))
     // get date and time in 5/23/2024 format and 01:52 format
 
 

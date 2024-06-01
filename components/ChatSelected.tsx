@@ -14,7 +14,7 @@ const ChatSelected = () => {
     const [showEmojiMenu, setShowEmojiMenu] = useState<boolean>(false);
     const [emojis, setEmojis] = useState<string[]>([]);
     const [value, setValue] = useState<string>('');
-    const { friendId, userId, username } = useFriendStore(state => ({ friendId: state.friendId, userId: state.userId, username: state.username }));
+    const { friendId, userId, receiverUsername } = useFriendStore(state => ({ friendId: state.friendId, userId: state.userId, receiverUsername: state.receiverUsername }));
     const [messages, setMessages] = useState<Message[]>([]);
 
     const triggerEffect = (effectName: string) => {
@@ -77,8 +77,9 @@ const ChatSelected = () => {
             setMessages(prevMessages => [...prevMessages, {
                 ...message,
                 isSender: message.senderId === userId,  // Make sure 'senderId' is a known property
-                receiver: message.receiver || { username: username, profilePic: '/default-pic.jpg' },
-                sender: message.sender || { profilePic: '/default-pic.jpg' },
+                receiver: message.receiver,
+                sender: message.sender,
+                profilePic: message.sender ? message.sender.profilePic : '',
             }]);
         };
 
@@ -100,7 +101,6 @@ const ChatSelected = () => {
             content: value,
             senderId: userId,
             receiverId: friendId,
-            isSender: true, // Assume sender until confirmed by server
         };
         socket.emit('new-message', newMessage);
         setValue('');
@@ -132,10 +132,10 @@ const ChatSelected = () => {
                 {messages.map((message: Message, index: number) => (
                     <React.Fragment key={index}>
                         <ChatBubble
-                            username={message.isSender ? "You" : message.receiver.username}
+                            username={message.isSender ? "You" : receiverUsername}
                             message={message.content}
                             isSender={message.isSender}
-                            profilePic={message.sender.profilePic}
+                            profilePic={message.sender ? message.sender.profilePic : ''}
                         />
                     </React.Fragment>
                 ))}

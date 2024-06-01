@@ -24,6 +24,14 @@ app.prepare().then(() => {
                         content,
                         senderId,
                         receiverId
+                    },
+                    include: {
+                        sender: {
+                            select: {
+                                profilePic: true
+
+                            }
+                        },
                     }
                 });
 
