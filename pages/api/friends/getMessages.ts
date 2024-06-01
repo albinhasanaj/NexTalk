@@ -45,9 +45,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             isSender: message.senderId === userId  // Check if the logged-in user is the sender
         }));
 
-        // console.log the profilePic of the sender and receiver
-        console.log(enhancedMessages.map(message => message.sender.profilePic));
-
         res.status(200).json({ messages: enhancedMessages });
     } catch (error) {
         console.error(error);

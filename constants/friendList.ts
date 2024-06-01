@@ -1,5 +1,3 @@
-import { profile } from "console";
-
 export const friends = [
     {
         name: "Alyisa Bravery",

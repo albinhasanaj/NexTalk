@@ -5,14 +5,17 @@ import "../app/chat.css";
 import toast from 'react-hot-toast';
 import { useFriendStore } from '@/store/useStore';
 import ChatBubble from './ChatBubble';
+import { io } from 'socket.io-client';
+
+const socket = io("http://localhost:5000");
 
 const ChatSelected = () => {
     const [effect, setEffect] = useState<string | null>(null);
     const [showEmojiMenu, setShowEmojiMenu] = useState<boolean>(false);
     const [emojis, setEmojis] = useState<string[]>([]);
     const [value, setValue] = useState<string>('');
-    const { friendId } = useFriendStore(state => ({ friendId: state.friendId }));
-    const [messages, setMessages] = useState([]);
+    const { friendId, userId, username } = useFriendStore(state => ({ friendId: state.friendId, userId: state.userId, username: state.username }));
+    const [messages, setMessages] = useState<Message[]>([]);
 
     const triggerEffect = (effectName: string) => {
         setEffect(effectName);
@@ -69,29 +72,39 @@ const ChatSelected = () => {
         setValue(e.target.value);
     };
 
-    const handleSend = async () => {
-        const content = value;
-        if (content.trim() === '') return;
+    useEffect(() => {
+        const handleMessageReceive = (message: Message) => {
+            setMessages(prevMessages => [...prevMessages, {
+                ...message,
+                isSender: message.senderId === userId,  // Make sure 'senderId' is a known property
+                receiver: message.receiver || { username: username, profilePic: '/default-pic.jpg' },
+                sender: message.sender || { profilePic: '/default-pic.jpg' },
+            }]);
+        };
 
-        try {
-            const response = await fetch("/api/friends/sendMessage", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ content, receiverId: friendId }),
-            });
+        socket.on('message', handleMessageReceive);
 
-            if (!response.ok) {
-                throw new Error("Failed to send message");
-            }
+        return () => {
+            socket.off('message', handleMessageReceive);
+        };
+    }, [userId]);  // Listen to changes in `userId` if it's part of your state or context
 
-            setValue('');
 
-        } catch (error) {
-            toast.error("Failed to send message");
-        }
-    }
+
+
+    const handleSend = () => {
+        if (!value.trim()) return;
+
+        // Emit the new message to the server
+        const newMessage = {
+            content: value,
+            senderId: userId,
+            receiverId: friendId,
+            isSender: true, // Assume sender until confirmed by server
+        };
+        socket.emit('new-message', newMessage);
+        setValue('');
+    };
     useEffect(() => {
         const fetchMessages = async () => {
             try {
@@ -101,8 +114,6 @@ const ChatSelected = () => {
                 }
 
                 const data = await response.json();
-                console.log("This is the profile_pic", data.messages[0].receiver.profilePic)
-                console.log("This is the profile_pic", data.messages[2].receiver.profilePic)
                 setMessages(data.messages);
             } catch (error) {
                 toast.error("Failed to fetch messages");

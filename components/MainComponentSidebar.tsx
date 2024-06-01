@@ -10,7 +10,11 @@ const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [friends, setFriends] = useState<AccountProps[]>([]);
 
-    const { setFriendId, setUsername } = useFriendStore(state => ({ setFriendId: state.setFriendId, setUsername: state.setUsername }));
+    const { setFriendId, setUsername, setUserId } = useFriendStore(state => ({
+        setFriendId: state.setFriendId,
+        setUsername: state.setUsername,
+        setUserId: state.setUserId
+    }));
 
     const settingsSelected = () => {
         if (view === 'Settings') {
@@ -22,7 +26,8 @@ const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
 
     const handleChatSelected = (friendId: string, username: string) => {
         setFriendId(friendId);
-        setUsername(username)
+        setUsername(username);
+
         if (view === 'ChatSelected') {
             setView('NoChatSelected');
         } else {
@@ -38,11 +43,13 @@ const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
         }
     };
 
-
     const fetchFriends = async () => {
         const response = await fetch('/api/friends/getFriends');
         const data = await response.json();
-        setFriends(data.data);
+        const filteredData = data.data.slice(1)
+
+        setUserId(data.data[0].id);
+        setFriends(filteredData);
     };
 
     useEffect(() => {

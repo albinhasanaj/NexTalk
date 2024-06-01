@@ -1,7 +1,5 @@
 import React, { ChangeEvent } from 'react'
-
 const Searchbar = ({ searchQuery, setSearchQuery }: SearchbarProps) => {
-
     // access the database and search for the username
     const handleSearch = async (e: ChangeEvent<HTMLInputElement>) => {
         const query = e.target.value;

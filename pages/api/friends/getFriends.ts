@@ -49,6 +49,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             }
         });
 
+        friendDetails.unshift({ id: userId, username: 'You', profilePic: '' });
+        // console.log(friendDetails);
+
+
         return res.status(200).json({ data: friendDetails });
     } catch (error) {
         console.error('Failed to retrieve friends:', error);

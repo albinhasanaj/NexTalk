@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import MainComponent from '@/components/MainComponent'
 import MainComponentSidebar from '@/components/MainComponentSidebar';
 

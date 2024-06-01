@@ -5,6 +5,8 @@ const Navbar = () => {
     const { username } = useFriendStore(state => ({ username: state.username }))
     // get date and time in 5/23/2024 format and 01:52 format
 
+
+
     const [dateTime, setDateTime] = useState({
         date: new Date().toLocaleDateString('en-US', {
             year: 'numeric',
@@ -14,8 +16,10 @@ const Navbar = () => {
         time: new Date().toLocaleTimeString('en-US', {
             hour: '2-digit',
             minute: '2-digit',
+            hour12: false,
         }),
     });
+
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -28,6 +32,7 @@ const Navbar = () => {
                 time: new Date().toLocaleTimeString('en-US', {
                     hour: '2-digit',
                     minute: '2-digit',
+                    hour12: false,
                 }),
             });
         }, 1000);
