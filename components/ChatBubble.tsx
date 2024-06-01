@@ -1,6 +1,7 @@
 import React from 'react'
 
 const ChatBubble = ({ message, isSender, profilePic, username }: ChatBubbleProps) => {
+
     return (
         <>
             {isSender ? (
@@ -15,7 +16,8 @@ const ChatBubble = ({ message, isSender, profilePic, username }: ChatBubbleProps
                             {username}
                             {/* <time className="text-xs opacity-50">12:46</time> */}
                         </div>
-                        <div className="chat-bubble bg-blue-500 text-white">{message}</div>
+                        <div className="chat-bubble bg-blue-500 text-white break-all"
+                        >{message}</div>
                     </div>
                 </>
             ) : (
