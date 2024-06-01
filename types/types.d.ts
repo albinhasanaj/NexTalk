@@ -72,3 +72,11 @@ declare interface Message {
         username: string;
     };
 };
+
+declare type EmojiMap = {
+    freeze: '🥶',
+    fire: '🔥',
+    ufo: '👽',
+    confetti: '🎉',
+    mystery: '❓',
+};

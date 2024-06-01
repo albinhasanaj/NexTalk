@@ -1,9 +1,9 @@
 import Image from 'next/image';
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, CSSProperties, Fragment, ChangeEvent } from 'react';
 import EmojiMenu from './EmojiMenu';
 import "../app/chat.css";
 import toast from 'react-hot-toast';
-import { useFriendStore } from '@/store/useStore';
+import { useChatSessionStore } from '@/store/useStore';
 import ChatBubble from './ChatBubble';
 import { io } from 'socket.io-client';
 
@@ -14,72 +14,44 @@ const ChatSelected = () => {
     const [showEmojiMenu, setShowEmojiMenu] = useState<boolean>(false);
     const [emojis, setEmojis] = useState<string[]>([]);
     const [value, setValue] = useState<string>('');
-    const { friendId, userId, receiverUsername } = useFriendStore(state => ({ friendId: state.friendId, userId: state.userId, receiverUsername: state.receiverUsername }));
+    const { friendId, userId, receiverUsername } = useChatSessionStore(state => ({
+        friendId: state.friendId, userId: state.userId, receiverUsername: state.receiverUsername
+    }));
     const [messages, setMessages] = useState<Message[]>([]);
-    const scrollRef = useRef<HTMLDivElement>(null);
 
+    const endOfMessagesRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
-        if (scrollRef.current) {
-            // smooth scroll to the bottom of the chat
-            const scrollElement = document.createElement("div");
-            scrollRef.current.appendChild(scrollElement);
-            scrollElement.scrollIntoView({ behavior: 'smooth' });
-            scrollRef.current.removeChild(scrollElement);
+        if (endOfMessagesRef.current) {
+            endOfMessagesRef.current.scrollIntoView({ behavior: 'smooth' });
         }
     }, [messages]);
 
     const triggerEffect = (effectName: string) => {
         setEffect(effectName);
         setShowEmojiMenu(false);
-
-        const emojiMap: { [key: string]: string } = {
+        const emojiMap = {
             freeze: '🥶',
             fire: '🔥',
             ufo: '👽',
             confetti: '🎉',
             mystery: '❓',
         };
-
-        setEmojis(Array.from({ length: 50 }, () => emojiMap[effectName]));
-
+        setEmojis(Array.from({ length: 50 }, () => emojiMap[effectName as keyof EmojiMap]));
         setTimeout(() => {
             setEffect(null);
             setEmojis([]);
-        }, 3000); // Reset effect after 3 seconds
+        }, 3000);
     };
 
-    useEffect(() => {
-        if (effect) {
-            document.documentElement.style.setProperty('--effect-bg-color', getEffectBgColor(effect));
-        }
-    }, [effect]);
-
-
-    const getEffectBgColor = (effect: string) => {
-        switch (effect) {
-            case 'freeze':
-                return 'rgba(0, 191, 255, 0.8)';
-            case 'fire':
-                return 'rgba(255, 69, 0, 0.8)';
-            case 'ufo':
-                return 'rgba(75, 0, 130, 0.8)';
-            case 'confetti':
-                return 'rgba(255, 215, 0, 0.8)';
-            case 'mystery':
-                return 'rgba(255, 20, 147, 0.8)';
-            default:
-                return 'transparent';
-        }
+    const createRandomEmojiStyles = (): CSSProperties => {
+        return {
+            '--x': `${Math.random() * 200 - 100}vw`,
+            '--y': `${Math.random() * 200 - 100}vh`,
+            '--r': `${Math.random() * 720 - 360}deg`,
+        } as CSSProperties;  // Cast to CSSProperties to satisfy TypeScript
     };
 
-    const createRandomEmojiStyles = () => {
-        const x = `${Math.random() * 200 - 100}vw`;
-        const y = `${Math.random() * 200 - 100}vh`;
-        const r = `${Math.random() * 720 - 360}deg`;
-        return { '--x': x, '--y': y, '--r': r } as React.CSSProperties;
-    };
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setValue(e.target.value);
     };
 
@@ -100,9 +72,6 @@ const ChatSelected = () => {
             socket.off('message', handleMessageReceive);
         };
     }, [userId]);  // Listen to changes in `userId` if it's part of your state or context
-
-
-
 
     const handleSend = () => {
         if (!value.trim()) return;
@@ -139,16 +108,17 @@ const ChatSelected = () => {
 
     return (
         <div className='flex flex-col w-full h-full justify-between relative overflow-hidden'>
-            <div ref={scrollRef} className="overflow-auto scrollbar px-6 mb-6">
+            <div className="overflow-auto scrollbar px-6 mb-6">
                 {messages.map((message: Message, index: number) => (
-                    <React.Fragment key={index}>
+                    <Fragment key={index}>
                         <ChatBubble
                             username={message.isSender ? "You" : receiverUsername}
                             message={message.content}
                             isSender={message.isSender}
                             profilePic={message.sender ? message.sender.profilePic : ''}
                         />
-                    </React.Fragment>
+                        <div ref={endOfMessagesRef} />
+                    </Fragment>
                 ))}
             </div>
             <div className={`effect show ${effect}`}></div>

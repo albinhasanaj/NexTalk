@@ -1,7 +1,5 @@
 import jwt, { VerifyErrors } from 'jsonwebtoken';
-import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
-import { getSession } from 'next-auth/react';
-
+import { NextApiRequest, NextApiResponse } from 'next';
 
 // Function to generate JWT
 export const generateToken = (user: JwtPayload) => {

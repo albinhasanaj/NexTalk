@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type FriendStoreProps = {
+type ChatSessionStore = {
     friendId: string;
     receiverUsername: string;
     userId: string;
@@ -11,7 +11,7 @@ type FriendStoreProps = {
     setUserProfilePic: (userProfilePic: string) => void;
 }
 
-export const useFriendStore = create<FriendStoreProps>((set) => ({
+export const useChatSessionStore = create<ChatSessionStore>((set) => ({
     friendId: "",
     receiverUsername: "",
     userId: "",

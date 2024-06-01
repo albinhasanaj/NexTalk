@@ -3,14 +3,14 @@ import Searchbar from './Searchbar'
 import Account from './Account'
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { useFriendStore } from '@/store/useStore';
+import { useChatSessionStore } from '@/store/useStore';
 
 const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
     const [searchResults, setSearchResults] = useState<SearchResults[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [friends, setFriends] = useState<AccountProps[]>([]);
 
-    const { setFriendId, setReceiverUsername, setUserId } = useFriendStore(state => ({
+    const { setFriendId, setReceiverUsername, setUserId } = useChatSessionStore(state => ({
         setFriendId: state.setFriendId,
         setReceiverUsername: state.setReceiverUsername,
         setUserId: state.setUserId

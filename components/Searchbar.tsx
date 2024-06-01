@@ -1,12 +1,10 @@
-import React, { ChangeEvent } from 'react'
+import { ChangeEvent } from 'react'
 const Searchbar = ({ searchQuery, setSearchQuery }: SearchbarProps) => {
     // access the database and search for the username
     const handleSearch = async (e: ChangeEvent<HTMLInputElement>) => {
         const query = e.target.value;
         setSearchQuery(query);  // Update the searchQuery in parent state
     };
-
-
 
     return (
         <label className='w-full flex justify-center'>

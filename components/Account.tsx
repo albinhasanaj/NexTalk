@@ -1,6 +1,6 @@
 "use client";
 import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import '../app/chat.css'
 import { GrUserAdd } from "react-icons/gr";
 import { GoGear } from "react-icons/go";

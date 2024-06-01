@@ -18,7 +18,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     try {
-        console.log("Sending message")
         const message = await prisma.message.create({
             data: {
                 content,
@@ -29,6 +28,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         return res.status(201).json({ message: 'Message sent successfully', data: message });
     } catch (error) {
-
+        res.status(500).json({ message: 'Internal server error', error: (error as Error).message });
     }
 };

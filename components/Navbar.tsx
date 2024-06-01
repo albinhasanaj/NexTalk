@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import { useFriendStore } from '@/store/useStore'
+import { useEffect, useState } from 'react'
+import { useChatSessionStore } from '@/store/useStore'
 
 const Navbar = () => {
-    const { username } = useFriendStore(state => ({ username: state.receiverUsername }))
+    const { username } = useChatSessionStore(state => ({ username: state.receiverUsername }))
     // get date and time in 5/23/2024 format and 01:52 format
-
-
 
     const [dateTime, setDateTime] = useState({
         date: new Date().toLocaleDateString('en-US', {
