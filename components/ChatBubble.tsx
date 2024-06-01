@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import React from 'react'
 
 const ChatBubble = ({ message, isSender, profilePic, username }: ChatBubbleProps) => {
@@ -9,7 +10,13 @@ const ChatBubble = ({ message, isSender, profilePic, username }: ChatBubbleProps
                     <div className="chat chat-end">
                         <div className="chat-image avatar">
                             <div className="w-10 rounded-full">
-                                <img alt="Tailwind CSS chat bubble component" src={profilePic} />
+                                <Image
+                                    alt="Chat bubble"
+                                    src={profilePic}
+                                    width={40}
+                                    height={40}
+                                    className="rounded-full"
+                                />
                             </div>
                         </div>
                         <div className="chat-header">
@@ -24,14 +31,20 @@ const ChatBubble = ({ message, isSender, profilePic, username }: ChatBubbleProps
                 <div className="chat chat-start">
                     <div className="chat-image avatar">
                         <div className="w-10 rounded-full">
-                            <img alt="Tailwind CSS chat bubble component" src={profilePic} />
+                            <Image
+                                alt="Chat bubble"
+                                src={profilePic}
+                                width={40}
+                                height={40}
+                                className="rounded-full"
+                            />
                         </div>
                     </div>
                     <div className="chat-header">
                         {username}
                         {/* <time className="text-xs opacity-50">12:45</time> */}
                     </div>
-                    <div className="chat-bubble text-white">{message}</div>
+                    <div className="chat-bubble text-white break-all">{message}</div>
                 </div>
             )}
         </>
