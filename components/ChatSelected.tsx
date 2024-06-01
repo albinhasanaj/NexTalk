@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import EmojiMenu from './EmojiMenu';
 import "../app/chat.css";
 import toast from 'react-hot-toast';
@@ -16,6 +16,17 @@ const ChatSelected = () => {
     const [value, setValue] = useState<string>('');
     const { friendId, userId, receiverUsername } = useFriendStore(state => ({ friendId: state.friendId, userId: state.userId, receiverUsername: state.receiverUsername }));
     const [messages, setMessages] = useState<Message[]>([]);
+    const scrollRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (scrollRef.current) {
+            // smooth scroll to the bottom of the chat
+            const scrollElement = document.createElement("div");
+            scrollRef.current.appendChild(scrollElement);
+            scrollElement.scrollIntoView({ behavior: 'smooth' });
+            scrollRef.current.removeChild(scrollElement);
+        }
+    }, [messages]);
 
     const triggerEffect = (effectName: string) => {
         setEffect(effectName);
@@ -128,7 +139,7 @@ const ChatSelected = () => {
 
     return (
         <div className='flex flex-col w-full h-full justify-between relative overflow-hidden'>
-            <div className="overflow-auto scrollbar px-7">
+            <div ref={scrollRef} className="overflow-auto scrollbar px-6 mb-6">
                 {messages.map((message: Message, index: number) => (
                     <React.Fragment key={index}>
                         <ChatBubble
