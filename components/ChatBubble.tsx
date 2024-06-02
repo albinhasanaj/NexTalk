@@ -1,11 +1,12 @@
 import Image from 'next/image'
+import { Fragment } from 'react'
 
 const ChatBubble = ({ message, isSender, profilePic, username }: ChatBubbleProps) => {
 
     return (
-        <>
+        <Fragment>
             {isSender ? (
-                <>
+                <Fragment>
                     <div className="chat chat-end">
                         <div className="chat-image avatar">
                             <div className="w-10 rounded-full">
@@ -22,10 +23,10 @@ const ChatBubble = ({ message, isSender, profilePic, username }: ChatBubbleProps
                             {username}
                             {/* <time className="text-xs opacity-50">12:46</time> */}
                         </div>
-                        <div className="chat-bubble bg-blue-500 text-white break-all"
+                        <div className="chat-bubble bg-blue-500 text-white break-words text-start"
                         >{message}</div>
                     </div>
-                </>
+                </Fragment>
             ) : (
                 <div className="chat chat-start">
                     <div className="chat-image avatar">
@@ -46,7 +47,7 @@ const ChatBubble = ({ message, isSender, profilePic, username }: ChatBubbleProps
                     <div className="chat-bubble text-white break-all">{message}</div>
                 </div>
             )}
-        </>
+        </Fragment>
     )
 }
 

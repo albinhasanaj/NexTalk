@@ -2,7 +2,7 @@
 import AuthSidebar from "./AuthSidebar";
 import InputField from "./InputField";
 import Link from "next/link";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import AuthProviderButton from "./AuthProviderButton";
@@ -77,7 +77,7 @@ const AuthForm = ({ isLogin }: AuthFormProps) => {
     };
 
     return (
-        <>
+        <Fragment>
             <AuthSidebar href={isLogin ? "/signup" : "/login"} />
             {/* RIGHT SIDE */}
             <div className="w-[300px] md:w-[500px] md:h-[600px] lg:w-[600px] h-auto lg:h-[750px] md:rounded-r-3xl md:rounded-tl-none md:rounded-bl-none md:rounded-tr-3xl border border-white border-opacity-50 bg-white/7 backdrop-blur-[7.5px] bg-[rgba(255,255,255,0.07)] text-white flex flex-col items-center py-8 gap-8 rounded-3xl">
@@ -101,14 +101,14 @@ const AuthForm = ({ isLogin }: AuthFormProps) => {
                             name="password" handleChange={handleChange}
                         />
                     ) : (
-                        <>
+                        <Fragment>
                             <InputField label="Email Address*" placeholder="johndoe@gmail.com" customClasses="w-full" type="email"
                                 name="email" handleChange={handleChange}
                             />
                             <InputField label="Password*" placeholder="******" customClasses="w-full" type="password"
                                 name="password" handleChange={handleChange}
                             />
-                        </>
+                        </Fragment>
                     )}
                     <div className="flex flex-col items-center gap-8">
                         <div className="flex gap-2 justify-center items-center">
@@ -132,7 +132,7 @@ const AuthForm = ({ isLogin }: AuthFormProps) => {
 
                 </form >
             </div>
-        </>
+        </Fragment>
 
 
     )

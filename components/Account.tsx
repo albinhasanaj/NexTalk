@@ -1,6 +1,6 @@
 "use client";
 import Image from 'next/image'
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import '../app/chat.css'
 import { GrUserAdd } from "react-icons/gr";
 import { GoGear } from "react-icons/go";
@@ -96,7 +96,7 @@ const Account = ({ username, nickname, profilePic, isOnline, hasIcon, isPinned: 
                             )}
                         </label>
                         {isFriend ? (
-                            <>
+                            <Fragment>
                                 <ul tabIndex={0} className="menu bg-base-200 rounded-box dropdown-content z-[1] right-1 w-[150px]">
                                     <li><a>Set nickname</a></li>
                                     <li><a onClick={togglePin}>{isPinned ? 'Unpin chat' : 'Pin chat📌'}</a></li>
@@ -114,16 +114,17 @@ const Account = ({ username, nickname, profilePic, isOnline, hasIcon, isPinned: 
                                         onClick={handleUnfriend}
                                     >Unfriend</a></li>
                                 </ul>
-                            </>
+                            </Fragment>
                         )
                             : (
-                                <>
+                                <Fragment>
+
                                     <ul tabIndex={0} className="menu bg-base-200 rounded-box dropdown-content z-[1] right-1 w-[150px]">
                                         <li><a
                                             onClick={handleAddFriend}
                                         >Add friend</a></li>
                                     </ul>
-                                </>
+                                </Fragment>
                             )}
                     </div>
                 </div>

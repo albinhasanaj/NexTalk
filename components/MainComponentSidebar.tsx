@@ -2,7 +2,7 @@
 import Searchbar from './Searchbar'
 import Account from './Account'
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useChatSessionStore } from '@/store/useStore';
 
 const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
@@ -82,7 +82,7 @@ const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
             <div className='flex flex-col h-full gap-10 scrollbar mb-auto overflow-auto'>
                 {/* if searching, display searched only, else display your Account */}
                 {searchResults.length > 0 ? (
-                    <>
+                    <Fragment>
                         {searchResults.map((result) => (
                             <Account
                                 key={result.id}
@@ -92,9 +92,9 @@ const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
                                 id={result.id}
                             />
                         ))}
-                    </>
+                    </Fragment>
                 ) : (
-                    <>
+                    <Fragment>
                         {friends.map((friend) => (
                             <Account
                                 key={friend.id}
@@ -112,7 +112,7 @@ const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
                                 refreshFriends={refreshFriends}
                             />
                         ))}
-                    </>
+                    </Fragment>
                 )}
 
             </div>

@@ -1,23 +1,32 @@
 import Image from 'next/image';
-import { useState, useEffect, useRef, CSSProperties, Fragment, ChangeEvent } from 'react';
+import { useState, useEffect, useRef, Fragment, ChangeEvent } from 'react';
 import EmojiMenu from './EmojiMenu';
 import "../app/chat.css";
 import toast from 'react-hot-toast';
 import { useChatSessionStore } from '@/store/useStore';
 import ChatBubble from './ChatBubble';
 import { io } from 'socket.io-client';
+import { useEmojiEffect } from '@/hooks/useEmojiEffect';
 
 const socket = io("http://localhost:5000");
 
 const ChatSelected = () => {
-    const [effect, setEffect] = useState<string | null>(null);
-    const [showEmojiMenu, setShowEmojiMenu] = useState<boolean>(false);
-    const [emojis, setEmojis] = useState<string[]>([]);
     const [value, setValue] = useState<string>('');
-    const { friendId, userId, receiverUsername } = useChatSessionStore(state => ({
-        friendId: state.friendId, userId: state.userId, receiverUsername: state.receiverUsername
-    }));
     const [messages, setMessages] = useState<Message[]>([]);
+
+    const { friendId, userId, receiverUsername } = useChatSessionStore(state => ({
+        friendId: state.friendId,
+        userId: state.userId,
+        receiverUsername: state.receiverUsername
+    }));
+
+    const { emojis,
+        effect,
+        showEmojiMenu,
+        triggerEffect,
+        createRandomEmojiStyles,
+        setShowEmojiMenu
+    } = useEmojiEffect();
 
     const endOfMessagesRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
@@ -25,31 +34,6 @@ const ChatSelected = () => {
             endOfMessagesRef.current.scrollIntoView({ behavior: 'smooth' });
         }
     }, [messages]);
-
-    const triggerEffect = (effectName: string) => {
-        setEffect(effectName);
-        setShowEmojiMenu(false);
-        const emojiMap = {
-            freeze: '🥶',
-            fire: '🔥',
-            ufo: '👽',
-            confetti: '🎉',
-            mystery: '❓',
-        };
-        setEmojis(Array.from({ length: 50 }, () => emojiMap[effectName as keyof EmojiMap]));
-        setTimeout(() => {
-            setEffect(null);
-            setEmojis([]);
-        }, 3000);
-    };
-
-    const createRandomEmojiStyles = (): CSSProperties => {
-        return {
-            '--x': `${Math.random() * 200 - 100}vw`,
-            '--y': `${Math.random() * 200 - 100}vh`,
-            '--r': `${Math.random() * 720 - 360}deg`,
-        } as CSSProperties;  // Cast to CSSProperties to satisfy TypeScript
-    };
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setValue(e.target.value);
