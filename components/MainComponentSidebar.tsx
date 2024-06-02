@@ -4,17 +4,43 @@ import Account from './Account'
 import Image from 'next/image';
 import { Fragment, useEffect, useState } from 'react';
 import { useChatSessionStore } from '@/store/useStore';
+import useSocketConnection from '@/hooks/useSocketConnection';
 
 const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
     const [searchResults, setSearchResults] = useState<SearchResults[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [friends, setFriends] = useState<AccountProps[]>([]);
+    const socket = useSocketConnection();
 
-    const { setFriendId, setReceiverUsername, setUserId } = useChatSessionStore(state => ({
+    const { setFriendId, setReceiverUsername, setUserId, userId } = useChatSessionStore(state => ({
         setFriendId: state.setFriendId,
         setReceiverUsername: state.setReceiverUsername,
-        setUserId: state.setUserId
+        setUserId: state.setUserId,
+        userId: state.userId
     }));
+
+    useEffect(() => {
+        if (userId) {
+            socket.emit('register', { userId });
+        }
+
+        const handleStatusChange = ({ userId, isOnline }: { userId: string, isOnline: boolean }) => {
+            console.log('Friend status changed:', userId, isOnline);
+            setFriends(currentFriends => currentFriends.map(friend => {
+                if (friend.id === userId) {
+                    return { ...friend, isOnline };
+                }
+                return friend;
+            }));
+        };
+
+        socket.on('friend-status-changed', handleStatusChange);
+
+        return () => {
+            socket.off('friend-status-changed', handleStatusChange);
+        };
+    }, [userId, socket]);
+
 
     const settingsSelected = () => {
         if (view === 'Settings') {
@@ -100,7 +126,7 @@ const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
                                 key={friend.id}
                                 username={friend.username}
                                 profilePic={friend.profilePic}
-                                isOnline={true}
+                                isOnline={friend.isOnline}
                                 hasIcon=''
                                 isPinned={false}
                                 newMessages={0}
