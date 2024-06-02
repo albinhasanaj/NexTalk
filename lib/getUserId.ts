@@ -5,36 +5,39 @@ import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 
+export const extractUserId = async (token: string | null): Promise<string | null> => {
+    if (!token) return null;
+
+    try {
+        const decodedToken = decodeToken(token);
+        if (!decodedToken) return null;
+        return decodedToken.id;
+    } catch (error) {
+        console.error("Failed to decode token:", error);
+        return null;
+    }
+};
+
 export const getUserId = async (req: NextApiRequest, res: NextApiResponse) => {
-    let userId = "";
-    let session = await getServerSession(req, res, authOptions);
+    let userId = null;
+    const session = await getServerSession(req, res, authOptions);
     if (session && session.user) {
-        userId = session.user.id as string;
         const user = await prisma.user.findFirst({
             where: {
-                githubId: userId
+                githubId: session.user.id as string
             }
         });
         if (!user) {
-            return res.status(404).json({ message: 'Not found', error: 'User not found' });
+            res.status(404).json({ message: 'User not found', error: 'No user associated with this GitHub ID' });
+            return null;
         }
         userId = user.id;
     } else {
         const cookies = cookie.parse(req.headers.cookie || '');
-        const token = cookies.token;
-        if (!token) {
-            return res.status(401).json({ message: 'Unauthorized' });
-        }
-
-        try {
-            const decodedToken = decodeToken(token);
-            if (decodedToken) {
-                userId = decodedToken.id;
-            } else {
-                return res.status(403).json({ message: 'Forbidden', error: 'Invalid token' });
-            }
-        } catch (error) {
-            return res.status(500).json({ message: 'Internal server error', error: (error as Error).message });
+        userId = await extractUserId(cookies.token);
+        if (!userId) {
+            res.status(401).json({ message: 'Unauthorized', error: 'Invalid or expired token' });
+            return null;
         }
     }
 

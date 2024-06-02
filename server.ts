@@ -1,6 +1,10 @@
 import { createServer } from "http";
 import next from "next";
 import { Server } from "socket.io";
+import { decodeToken } from "./lib/generateAndValidateToken";
+import prisma from "./lib/prisma";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./pages/api/auth/[...nextauth]";
 
 const dev = process.env.NODE_ENV !== "production";
 const hostname = "localhost";
@@ -13,9 +17,7 @@ app.prepare().then(() => {
     const httpServer = createServer(handler);
     const io = new Server(httpServer);
 
-    io.on("connection", (socket) => {
-        console.log("Client connected");
-
+    io.on("connection", async (socket) => {
         socket.on("new-message", async (msg) => {
             try {
                 const { content, senderId, receiverId } = msg;
