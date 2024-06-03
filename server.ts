@@ -1,10 +1,7 @@
 import { createServer } from "http";
 import next from "next";
 import { Server } from "socket.io";
-import { decodeToken } from "./lib/generateAndValidateToken";
 import prisma from "./lib/prisma";
-import { getServerSession } from "next-auth";
-import { authOptions } from "./pages/api/auth/[...nextauth]";
 
 const dev = process.env.NODE_ENV !== "production";
 const hostname = "localhost";
@@ -15,7 +12,10 @@ const handler = app.getRequestHandler();
 
 app.prepare().then(() => {
     const httpServer = createServer(handler);
-    const io = new Server(httpServer);
+    const io = new Server(httpServer, {
+        // allow for trnasports
+        transports: ["websocket", "polling"],
+    });
 
     const userSockets = new Map();
 
@@ -24,6 +24,7 @@ app.prepare().then(() => {
 
         socket.on("register", async ({ userId }) => {
             // Register the new connection
+            console.log("User registered:", userId);
             userSockets.set(userId, socket.id);
             await notifyFriendsStatusChange(userId, true, io, userSockets); // Notify friends that user is online
         });
@@ -76,7 +77,7 @@ app.prepare().then(() => {
             console.error(err);
             process.exit(1);
         })
-        .listen(port, () => [
+        .listen(port, "0.0.0.0", () => [ //0.0.0.0 for development because it allows access from other devices
             console.log(`Server running on http://${hostname}:${port}`)
         ])
 });

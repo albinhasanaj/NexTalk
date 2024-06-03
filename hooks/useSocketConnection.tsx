@@ -1,22 +1,38 @@
-// useSocketConnection.js
 import io from 'socket.io-client';
 import { useEffect } from 'react';
 import { useChatSessionStore } from '@/store/useStore';
 
+// Create a singleton socket instance outside the hook
+
+const socket = io("http://localhost:3000", {
+    withCredentials: true,
+    transports: ["websocket", "polling"],
+});
 const useSocketConnection = () => {
     const userId = useChatSessionStore(state => state.userId);
-    const socket = io(process.env.NEXT_PUBLIC_NEXTAUTH_URL || 'http://localhost:5000');
 
     useEffect(() => {
+        // Ensure the socket connects only if it isn't already connected
+        if (!socket.connected) {
+            socket.connect();
+        }
+
         if (userId) {
             socket.emit('register', { userId });
         }
 
+        // Setup error handling
+        socket.on('connect_error', (error) => {
+            console.error('Connection Error:', error);
+        });
+
         return () => {
-            // Optionally emit an event when the component unmounts
             if (userId) {
                 socket.emit('user-logout', { userId });
             }
+            // Remove error handler and disconnect on cleanup
+            socket.off('connect_error');
+            socket.disconnect();
         };
     }, [userId]);
 

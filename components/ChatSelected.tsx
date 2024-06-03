@@ -8,7 +8,7 @@ import ChatBubble from './ChatBubble';
 import { io } from 'socket.io-client';
 import { useEmojiEffect } from '@/hooks/useEmojiEffect';
 
-const socket = io("http://localhost:5000");
+const socket = io("http://localhost:3000");
 
 const ChatSelected = () => {
     const [value, setValue] = useState<string>('');
