@@ -5,12 +5,11 @@ import Link from "next/link";
 export default function Home() {
   return (
     // HELA SIDAN
-    <div className="h-[400vh]">
+    <main className="scrollbar">
 
       {/* TOPPEN AV SIDAN */}
       <div className="relative m-0 min-h-screen 
-      bg-gradient-to-b from-black to-[rgba(255,255,255,0.05)]
-       overflow-hidden">
+      image__gradient">
         <div className="absolute inset-0">
           <Image
             src="/images/grid.png"
@@ -150,6 +149,6 @@ export default function Home() {
           </div>
         </form>
       </div>
-    </div>
+    </main>
   );
 }

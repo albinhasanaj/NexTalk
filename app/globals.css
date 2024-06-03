@@ -43,3 +43,8 @@ input[type="checkbox"]:checked::after {
     background-color: #777;
     /* Darker grey for hover effect */
 }
+
+.image__gradient {
+    /* use this oliver */
+
+}
