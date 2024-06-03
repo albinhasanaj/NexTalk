@@ -76,6 +76,7 @@ const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
 
         setUserId(data.data[0].id);
         setFriends(filteredData);
+        console.log('Friends:', filteredData);
     };
 
     useEffect(() => {

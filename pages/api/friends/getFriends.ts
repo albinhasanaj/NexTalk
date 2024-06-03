@@ -46,10 +46,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 id: true,
                 username: true,
                 profilePic: true,
+                isOnline: true,
             }
         });
 
-        friendDetails.unshift({ id: userId, username: 'You', profilePic: '' });
+        friendDetails.unshift({ id: userId, username: 'You', profilePic: '', isOnline: true });
         // console.log(friendDetails);
 
 
