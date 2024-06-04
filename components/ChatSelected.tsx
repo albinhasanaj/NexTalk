@@ -39,11 +39,48 @@ const ChatSelected = () => {
         setValue(e.target.value);
     };
 
+    const handleSendReaction = (reaction: string) => {
+        const reactionData = {
+            senderId: userId,
+            receiverId: friendId,
+            reaction
+        };
+        socket.emit('reaction', reactionData);
+    };
+
+
+    // FIX THIS ERRROR WHEN BACK HOME
+    // THE ERROR IS IN THIS USE EFFECT
+    // SPECIFICALLY IN DEPENDENCY ARRAY
+    // SINCE THE USERID AND RECEIVERUSERNAME ARE NOT CHANGING AS THEY ARE COMING FROM STORE
+    // SO THE USE EFFECT WILL NOT RUN AGAIN
+    // SO THE SOCKET WILL NOT LISTEN TO THE REACTION EVENT
+    // which is bad :(
+
+    // do you think these messages will be good for me when i get back?
+    // a: yes
+    // why?
+    // a: because you will have the messages from the chat
+    // 
+
+    useEffect(() => {
+        console.log("userId", userId)
+        const handleReceiveReaction = (reactionData) => {
+            console.log("reactionData", reactionData)
+        };
+
+        socket.on('reaction', handleReceiveReaction);
+
+        return () => {
+            socket.off('reaction', handleReceiveReaction);
+        };
+    }, [userId, receiverUsername]);
+
     useEffect(() => {
         const handleMessageReceive = (message: Message) => {
             setMessages(prevMessages => [...prevMessages, {
                 ...message,
-                isSender: message.senderId === userId,  // Make sure 'senderId' is a known property
+                isSender: message.senderId === userId,
                 receiver: message.receiver,
                 sender: message.sender,
                 profilePic: message.sender ? message.sender.profilePic : '',
@@ -55,7 +92,7 @@ const ChatSelected = () => {
         return () => {
             socket.off('message', handleMessageReceive);
         };
-    }, [userId]);  // Listen to changes in `userId` if it's part of your state or context
+    }, [userId]);
 
     const handleSend = () => {
         if (!value.trim()) return;
@@ -126,7 +163,7 @@ const ChatSelected = () => {
                     className='absolute left-[76%] top-[18%] cursor-pointer hover:-translate-y-0.5 transition-all'
                     onClick={() => setShowEmojiMenu(!showEmojiMenu)}
                 />
-                {showEmojiMenu && <EmojiMenu triggerEffect={triggerEffect} />}
+                {showEmojiMenu && <EmojiMenu triggerEffect={triggerEffect} sendReaction={handleSendReaction} />}
             </div>
         </div>
     );

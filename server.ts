@@ -38,6 +38,15 @@ app.prepare().then(() => {
             }
         });
 
+        socket.on("reaction", async ({ senderId, receiverId, reaction }) => {
+            console.log("Reaction received:", senderId, receiverId, reaction);
+            const receiverSocketId = userSockets.get(receiverId);
+            console.log("Receiver socket ID:", receiverSocketId);
+            if (receiverSocketId) {
+                io.to(receiverSocketId).emit("reaction", { senderId, reaction });
+            }
+        });
+
         socket.on('user-logout', async ({ userId }) => {
             userSockets.delete(userId);
             await notifyFriendsStatusChange(userId, false, io, userSockets);
