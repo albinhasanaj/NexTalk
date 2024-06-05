@@ -6,13 +6,11 @@ import toast from 'react-hot-toast';
 import { useChatSessionStore } from '@/store/useStore';
 import ChatBubble from './ChatBubble';
 import { useEmojiEffect } from '@/hooks/useEmojiEffect';
-import useSocketConnection from '@/hooks/useSocketConnection';
 
 
-const ChatSelected = () => {
+const ChatSelected = ({ socket, isConnected }: ChatSelectedProps) => {
     const [value, setValue] = useState<string>('');
     const [messages, setMessages] = useState<Message[]>([]);
-    const { socket, isConnected } = useSocketConnection();
 
     const { friendId, userId, receiverUsername } = useChatSessionStore(state => ({
         friendId: state.friendId,

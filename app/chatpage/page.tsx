@@ -2,10 +2,12 @@
 import { useState } from 'react'
 import MainComponent from '@/components/MainComponent'
 import MainComponentSidebar from '@/components/MainComponentSidebar';
+import useSocketConnection from '@/hooks/useSocketConnection';
 
 // this has to be a protected route
 const ChatPage = () => {
     const [view, setView] = useState('NoChatSelected');
+    const { socket, isConnected } = useSocketConnection();
 
     return (
         <div
@@ -13,10 +15,13 @@ const ChatPage = () => {
             style={{ backgroundImage: "url('/images/chatpagebg.png')" }}
         >
             <MainComponentSidebar
+                socket={socket}
                 view={view}
                 setView={setView}
             />
             <MainComponent
+                socket={socket}
+                isConnected={isConnected}
                 view={view}
             />
         </div>

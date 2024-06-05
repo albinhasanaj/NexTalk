@@ -6,13 +6,15 @@ import Logout from './Logout';
 
 const MainComponent = ({
     view,
+    socket,
+    isConnected
 }: MainComponentProps) => {
     const toggleView = (view: string) => {
         switch (view) {
             case 'NoChatSelected':
                 return <NoChatSelected />;
             case 'ChatSelected':
-                return <ChatSelected />;
+                return <ChatSelected socket={socket} isConnected={isConnected} />;
             case 'Settings':
                 return <Settings />;
             case 'Logout':

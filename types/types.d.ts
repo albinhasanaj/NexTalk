@@ -35,10 +35,13 @@ declare interface JwtPayload {
 declare interface MainComponentSidebarProps {
     view: string;
     setView: (view: string) => void;
+    socket: SocketIOClient.Socket;
 };
 
 declare interface MainComponentProps {
+    isConnected: boolean;
     view: string;
+    socket: SocketIOClient.Socket;
 };
 
 declare interface SearchbarProps {
@@ -58,6 +61,11 @@ declare interface ChatBubbleProps {
     isSender: boolean;
     profilePic: string;
     username: string;
+};
+
+declare interface ChatSelectedProps {
+    socket: SocketIOClient.Socket;
+    isConnected: boolean;
 };
 
 declare interface Message {

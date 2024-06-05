@@ -4,13 +4,11 @@ import Account from './Account'
 import Image from 'next/image';
 import { Fragment, useEffect, useState } from 'react';
 import { useChatSessionStore } from '@/store/useStore';
-import useSocketConnection from '@/hooks/useSocketConnection';
 
-const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
+const MainComponentSidebar = ({ view, setView, socket }: MainComponentSidebarProps) => {
     const [searchResults, setSearchResults] = useState<SearchResults[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [friends, setFriends] = useState<AccountProps[]>([]);
-    const { socket } = useSocketConnection();
 
     const { setFriendId, setReceiverUsername, setUserId, userId } = useChatSessionStore(state => ({
         setFriendId: state.setFriendId,

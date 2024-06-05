@@ -18,10 +18,10 @@ const useSocketConnection = () => {
         }
 
         socket.on('connect', () => {
-            setIsConnected(true);
             if (userId) {
                 socket.emit('register', { userId });
             }
+            setIsConnected(true);
         });
 
 
