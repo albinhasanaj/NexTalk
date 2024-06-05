@@ -39,6 +39,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         });
 
+        // Mark all messages as seen by the receiver
+        await prisma.message.updateMany({
+            where: {
+                receiverId: userId,
+                senderId: friendId,
+                seen: false
+            },
+            data: {
+                seen: true
+            }
+        });
+
         // Enhance messages by adding isSender flag
         const enhancedMessages = messages.map(message => ({
             ...message,

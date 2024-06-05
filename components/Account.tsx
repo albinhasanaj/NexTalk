@@ -67,10 +67,15 @@ const Account = ({ username, nickname, profilePic, isOnline, hasIcon, isPinned: 
                 <div onClick={handleClick} className='flex items-center hover:bg-white hover:bg-opacity-10 hover:rounded-full w-full cursor-pointer'>
                     <div className='relative mr-3'>
                         <Image src={profilePic} alt="profile" width={50} height={50} className="rounded-full" />
-                        {isOnline ? (
-                            <span className="bg-green-500 rounded-full h-3 w-3 absolute bottom-0 right-0" />
-                        ) : (
-                            <span className="bg-gray-500 rounded-full h-3 w-3 absolute bottom-0 right-0" />
+                        {isFriend && (
+                            <Fragment>
+                                {isOnline ? (
+                                    <span className="bg-green-500 rounded-full h-3 w-3 absolute bottom-0 right-0" />
+                                ) : (
+                                    <span className="bg-gray-500 rounded-full h-3 w-3 absolute bottom-0 right-0" />
+                                )}
+                            </Fragment>
+
                         )}
                     </div>
                     <div className='flex flex-col'>

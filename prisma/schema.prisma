@@ -34,11 +34,13 @@ model Friend {
 }
 
 model Message {
-  id         Int      @id @default(autoincrement())
+  id         Int       @id @default(autoincrement())
   content    String
-  createdAt  DateTime @default(now())
+  createdAt  DateTime  @default(now())
   senderId   String
   receiverId String
+  seen       Boolean   @default(false)
+  seenAt     DateTime?
 
   sender   User @relation(name: "UserMessagesSent", fields: [senderId], references: [id])
   receiver User @relation(name: "UserMessagesReceived", fields: [receiverId], references: [id])

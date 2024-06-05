@@ -34,6 +34,19 @@ const MainComponentSidebar = ({ view, setView, socket }: MainComponentSidebarPro
 
         socket.on('friend-status-changed', handleStatusChange);
 
+        const handleSeenNewMessage = ({ count, senderId }: { count: number, senderId: string }) => {
+
+            // Update the newMessages count for the sender
+            setFriends(currentFriends => currentFriends.map(friend => {
+                if (friend.id === senderId) {
+                    return { ...friend, newMessages: count };
+                }
+                return friend;
+            }));
+        };
+
+        socket.on("seen-new-message-all", handleSeenNewMessage);
+
         return () => {
             socket.off('friend-status-changed', handleStatusChange);
         };
@@ -74,7 +87,6 @@ const MainComponentSidebar = ({ view, setView, socket }: MainComponentSidebarPro
 
         setUserId(data.data[0].id);
         setFriends(filteredData);
-        console.log('Friends:', filteredData);
     };
 
     useEffect(() => {
@@ -128,7 +140,7 @@ const MainComponentSidebar = ({ view, setView, socket }: MainComponentSidebarPro
                                 isOnline={friend.isOnline}
                                 hasIcon=''
                                 isPinned={false}
-                                newMessages={0}
+                                newMessages={friend.newMessages}
                                 handleClick={() => {
                                     handleChatSelected(friend.id, friend.username);
                                 }}

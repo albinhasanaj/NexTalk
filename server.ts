@@ -18,6 +18,7 @@ app.prepare().then(() => {
     });
 
     const userSockets = new Map();
+    const userActiveChats = new Map();
 
     io.on("connection", async (socket) => {
         console.log("A user connected");
@@ -39,12 +40,18 @@ app.prepare().then(() => {
         });
 
         socket.on("reaction", async ({ senderId, receiverId, reaction }) => {
-            console.log("Reaction received:", senderId, receiverId, reaction);
             const receiverSocketId = userSockets.get(receiverId);
-            console.log("Receiver socket ID:", receiverSocketId);
-            if (receiverSocketId) {
+            const senderSocketId = userSockets.get(senderId);
+            const receiverActiveChat = userActiveChats.get(receiverId);
+            const senderActiveChat = userActiveChats.get(senderId);
+
+            if (receiverActiveChat === senderId && senderActiveChat === receiverId) {
                 io.to(receiverSocketId).emit("reaction", { senderId, reaction });
+                io.to(senderSocketId).emit("reaction", { senderId, reaction });
+            } else {
+                io.to(senderSocketId).emit("reaction", { senderId, reaction });
             }
+
         });
 
         socket.on('user-logout', async ({ userId }) => {
@@ -52,27 +59,105 @@ app.prepare().then(() => {
             await notifyFriendsStatusChange(userId, false, io, userSockets);
         });
 
+        socket.on("view-chat", async ({ userId, friendId }) => {
+            userActiveChats.set(userId, friendId);
+            // mark all messages as seen by the receiver
+            await prisma.message.updateMany({
+                where: {
+                    receiverId: userId,
+                    senderId: friendId,
+                    seen: false
+                },
+                data: {
+                    seen: true
+                }
+            });
+
+            // emit to clear the newMessages count for the receiver
+
+            const receiverSocketId = userSockets.get(userId);
+
+            if (receiverSocketId) {
+                io.to(receiverSocketId).emit("seen-new-message-all", { count: 0, senderId: friendId });
+            }
+        });
+
+        socket.on("leave-chat", async ({ userId }) => {
+            userActiveChats.delete(userId);
+        });
+
         socket.on("new-message", async (msg) => {
             try {
                 const { content, senderId, receiverId } = msg;
+                const receiverSocketId = userSockets.get(receiverId);
+                const senderSocketId = userSockets.get(senderId);
+                const receiverActiveChat = userActiveChats.get(receiverId);
+                const senderActiveChat = userActiveChats.get(senderId);
+
                 const message = await prisma.message.create({
                     data: {
                         content,
                         senderId,
-                        receiverId
+                        receiverId,
+                        seen: false
                     },
                     include: {
                         sender: {
                             select: {
                                 profilePic: true
-
                             }
                         },
                     }
                 });
 
-                // Emit the message back to all clients (including the sender)
-                io.emit("message", message);
+                if (receiverActiveChat !== senderId) {
+                    // If receiver is not in the sender's chat, just update the unread messages count
+                    const count = await prisma.message.count({
+                        where: {
+                            receiverId: receiverId,
+                            senderId: senderId,
+                            seen: false
+                        }
+                    });
+
+                    if (count > 0) {
+                        await prisma.message.updateMany({
+                            where: {
+                                receiverId: receiverId,
+                                senderId: senderId,
+                                seen: false
+                            },
+                            data: {
+                                seen: true
+                            }
+                        });
+
+                        if (receiverSocketId) {
+                            io.to(receiverSocketId).emit("seen-new-message-all", { count, senderId });
+                        }
+
+                    }
+                }
+
+                if (receiverActiveChat === senderId && senderActiveChat === receiverId) {
+                    // If both sender and receiver are in each other's chat, emit the message
+                    io.to(receiverSocketId).emit("message", {
+                        ...message,
+                        isSender: false
+                    });
+
+                    io.to(senderSocketId).emit("message", {
+                        ...message,
+                        isSender: true
+                    });
+                } else {
+                    io.to(senderSocketId).emit("message", {
+                        ...message,
+                        isSender: true
+                    });
+                }
+
+
             } catch (error) {
                 console.error("Failed to save message:", error);
                 // Handle error appropriately

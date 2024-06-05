@@ -25,6 +25,14 @@ declare interface AccountProps {
     refreshFriends?: () => void;
 };
 
+declare interface FriendDetails {
+    id?: string;
+    username?: string;
+    profilePic?: string | null;
+    isOnline?: boolean;
+    newMessages?: number;  // Adding new property here
+}
+
 declare interface JwtPayload {
     id: string;
     username: string;
@@ -72,14 +80,18 @@ declare interface Message {
     isSender: boolean;
     content: string;
     senderId: string;
+    receiverId: string;
+    seen: boolean;
     sender: {
         profilePic: string;
     };
-    receiver: {
-        profilePic: string;
-        username: string;
-    };
 };
+
+declare interface NoChatSelectedProps {
+    socket: SocketIOClient.Socket;
+};
+
+
 
 declare type EmojiMap = {
     freeze: '🥶',

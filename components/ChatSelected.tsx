@@ -50,7 +50,6 @@ const ChatSelected = ({ socket, isConnected }: ChatSelectedProps) => {
         console.log("isConnected", isConnected)
         if (isConnected) {
             const handleReceiveReaction = (reactionData: { senderId: string, reaction: string }) => {
-                console.log("Reaction received:", reactionData)
                 triggerEffect(reactionData.reaction);
             };
 
@@ -67,12 +66,13 @@ const ChatSelected = ({ socket, isConnected }: ChatSelectedProps) => {
             setMessages(prevMessages => [...prevMessages, {
                 ...message,
                 isSender: message.senderId === userId,
-                receiver: message.receiver,
+                receiver: message.receiverId,
                 sender: message.sender,
                 profilePic: message.sender ? message.sender.profilePic : '',
             }]);
         };
 
+        socket.emit('view-chat', { userId, friendId });
         socket.on('message', handleMessageReceive);
 
         return () => {

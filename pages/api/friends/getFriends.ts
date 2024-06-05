@@ -50,6 +50,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             }
         });
 
+        // Get if there are any unseen mesages for the user
+        const unseenMessages = await prisma.message.findMany({
+            where: {
+                receiverId: userId,
+                seen: false
+            },
+            select: {
+                senderId: true,
+            }
+        });
+
+        console.log('Unseen messages:', unseenMessages);
+
+        friendDetails.forEach(friend => {
+            const unseenMessageCount = unseenMessages.filter(message => message.senderId === friend.id).length;
+            friend.newMessages = unseenMessageCount;
+        });
+
+
         friendDetails.unshift({ id: userId, username: 'You', profilePic: '', isOnline: true });
         // console.log(friendDetails);
 

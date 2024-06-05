@@ -12,7 +12,7 @@ const MainComponent = ({
     const toggleView = (view: string) => {
         switch (view) {
             case 'NoChatSelected':
-                return <NoChatSelected />;
+                return <NoChatSelected socket={socket} />;
             case 'ChatSelected':
                 return <ChatSelected socket={socket} isConnected={isConnected} />;
             case 'Settings':
@@ -20,7 +20,7 @@ const MainComponent = ({
             case 'Logout':
                 return <Logout />;
             default:
-                return <NoChatSelected />;
+                return <NoChatSelected socket={socket} />;
         }
     };
     return (
