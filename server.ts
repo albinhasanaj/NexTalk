@@ -13,7 +13,7 @@ const handler = app.getRequestHandler();
 app.prepare().then(() => {
     const httpServer = createServer(handler);
     const io = new Server(httpServer, {
-        // allow for trnasports
+        // allow for transports other than websocket
         transports: ["websocket", "polling"],
     });
 

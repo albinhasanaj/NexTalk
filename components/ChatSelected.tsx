@@ -95,7 +95,7 @@ const ChatSelected = ({ socket, isConnected }: ChatSelectedProps) => {
     useEffect(() => {
         const fetchMessages = async () => {
             try {
-                const response = await fetch(`/api/friends/getMessages?friendId=${friendId}`);
+                const response = await fetch(`/api/messages/getMessages?friendId=${friendId}`);
                 if (!response.ok) {
                     throw new Error("Failed to fetch messages");
                 }

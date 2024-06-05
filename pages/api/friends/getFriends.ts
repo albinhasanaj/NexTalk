@@ -36,7 +36,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         });
 
         // Fetch the user details of the friends
-        const friendDetails = await prisma.user.findMany({
+        const friendDetails: FriendDetails[] = await prisma.user.findMany({
             where: {
                 id: {
                     in: friendIds
@@ -61,7 +61,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             }
         });
 
-        console.log('Unseen messages:', unseenMessages);
+        // console.log('Unseen messages:', unseenMessages);
 
         friendDetails.forEach(friend => {
             const unseenMessageCount = unseenMessages.filter(message => message.senderId === friend.id).length;
