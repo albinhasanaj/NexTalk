@@ -5,14 +5,14 @@ import "../app/chat.css";
 import toast from 'react-hot-toast';
 import { useChatSessionStore } from '@/store/useStore';
 import ChatBubble from './ChatBubble';
-import { io } from 'socket.io-client';
 import { useEmojiEffect } from '@/hooks/useEmojiEffect';
+import useSocketConnection from '@/hooks/useSocketConnection';
 
-const socket = io("http://localhost:3000");
 
 const ChatSelected = () => {
     const [value, setValue] = useState<string>('');
     const [messages, setMessages] = useState<Message[]>([]);
+    const { socket, isConnected } = useSocketConnection();
 
     const { friendId, userId, receiverUsername } = useChatSessionStore(state => ({
         friendId: state.friendId,
@@ -48,33 +48,21 @@ const ChatSelected = () => {
         socket.emit('reaction', reactionData);
     };
 
-
-    // FIX THIS ERRROR WHEN BACK HOME
-    // THE ERROR IS IN THIS USE EFFECT
-    // SPECIFICALLY IN DEPENDENCY ARRAY
-    // SINCE THE USERID AND RECEIVERUSERNAME ARE NOT CHANGING AS THEY ARE COMING FROM STORE
-    // SO THE USE EFFECT WILL NOT RUN AGAIN
-    // SO THE SOCKET WILL NOT LISTEN TO THE REACTION EVENT
-    // which is bad :(
-
-    // do you think these messages will be good for me when i get back?
-    // a: yes
-    // why?
-    // a: because you will have the messages from the chat
-    // 
-
     useEffect(() => {
-        console.log("userId", userId)
-        const handleReceiveReaction = (reactionData) => {
-            console.log("reactionData", reactionData)
-        };
+        console.log("isConnected", isConnected)
+        if (isConnected) {
+            const handleReceiveReaction = (reactionData: { senderId: string, reaction: string }) => {
+                console.log("Reaction received:", reactionData)
+                triggerEffect(reactionData.reaction);
+            };
 
-        socket.on('reaction', handleReceiveReaction);
+            socket.on('reaction', handleReceiveReaction);
+            return () => {
+                socket.off('reaction', handleReceiveReaction);
+            };
+        }
 
-        return () => {
-            socket.off('reaction', handleReceiveReaction);
-        };
-    }, [userId, receiverUsername]);
+    }, [isConnected, socket]);
 
     useEffect(() => {
         const handleMessageReceive = (message: Message) => {
@@ -142,10 +130,11 @@ const ChatSelected = () => {
                     </Fragment>
                 ))}
             </div>
-            <div className={`effect show ${effect}`}></div>
+            <div className={`effect show ${effect}`} />
             {emojis.map((emoji, index) => (
                 <div key={index} className="emoji absolute top-[50%] right-[50%]" style={createRandomEmojiStyles()}>{emoji}</div>
             ))}
+
             <div className='flex w-full justify-center relative'>
                 <input type="text" placeholder='Send a message' className='w-[85%] h-11 mb-4 rounded-[10px] bg-[#424141] border-[1px] border-solid border-[#353434] pl-3 placeholder-[rgba(255,255,255,0.50)] text-[0.8rem]'
                     value={value}

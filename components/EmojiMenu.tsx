@@ -19,7 +19,7 @@ const EmojiMenu: FC<EmojiMenuProps> = ({ triggerEffect, sendReaction }) => {
             {Object.entries(effects).map(([effectName, emoji]) => (
                 <button
                     key={effectName} // Added a key for React list rendering best practices
-                    onClick={() => { triggerEffect(effectName); sendReaction(emoji); }}
+                    onClick={() => { triggerEffect(effectName); sendReaction(effectName); }}
                     className='text-[1.5rem] hover:-translate-y-1 transition-all'
                 >
                     {emoji}

@@ -10,7 +10,7 @@ const MainComponentSidebar = ({ view, setView }: MainComponentSidebarProps) => {
     const [searchResults, setSearchResults] = useState<SearchResults[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [friends, setFriends] = useState<AccountProps[]>([]);
-    const socket = useSocketConnection();
+    const { socket } = useSocketConnection();
 
     const { setFriendId, setReceiverUsername, setUserId, userId } = useChatSessionStore(state => ({
         setFriendId: state.setFriendId,
