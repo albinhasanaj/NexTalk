@@ -34,12 +34,12 @@ const MainComponentSidebar = ({ view, setView, socket }: MainComponentSidebarPro
 
         socket.on('friend-status-changed', handleStatusChange);
 
-        const handleSeenNewMessage = ({ count, senderId }: { count: number, senderId: string }) => {
+        const handleSeenNewMessage = ({ hasSeenMessage, senderId }: { hasSeenMessage: number, senderId: string }) => {
 
             // Update the newMessages count for the sender
             setFriends(currentFriends => currentFriends.map(friend => {
                 if (friend.id === senderId) {
-                    return { ...friend, newMessages: count };
+                    return { ...friend, newMessages: hasSeenMessage };
                 }
                 return friend;
             }));
@@ -84,6 +84,7 @@ const MainComponentSidebar = ({ view, setView, socket }: MainComponentSidebarPro
         const response = await fetch('/api/friends/getFriends');
         const data = await response.json();
         const filteredData = data.data.slice(1)
+        console.log('Friends:', filteredData)
 
         setUserId(data.data[0].id);
         setFriends(filteredData);

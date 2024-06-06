@@ -61,11 +61,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             }
         });
 
-        // console.log('Unseen messages:', unseenMessages);
 
+        // Update the friendDetails to include the newMessages true or false
         friendDetails.forEach(friend => {
-            const unseenMessageCount = unseenMessages.filter(message => message.senderId === friend.id).length;
-            friend.newMessages = unseenMessageCount;
+            const hasUnseenMessage = unseenMessages.some(message => message.senderId === friend.id);
+            friend.newMessages = hasUnseenMessage;
         });
 
 

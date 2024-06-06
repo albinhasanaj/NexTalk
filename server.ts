@@ -112,30 +112,10 @@ app.prepare().then(() => {
 
                 if (receiverActiveChat !== senderId) {
                     // If receiver is not in the sender's chat, just update the unread messages count
-                    const count = await prisma.message.count({
-                        where: {
-                            receiverId: receiverId,
-                            senderId: senderId,
-                            seen: false
-                        }
-                    });
+                    const hasSeenMessage = true;
 
-                    if (count > 0) {
-                        await prisma.message.updateMany({
-                            where: {
-                                receiverId: receiverId,
-                                senderId: senderId,
-                                seen: false
-                            },
-                            data: {
-                                seen: true
-                            }
-                        });
-
-                        if (receiverSocketId) {
-                            io.to(receiverSocketId).emit("seen-new-message-all", { count, senderId });
-                        }
-
+                    if (receiverSocketId) {
+                        io.to(receiverSocketId).emit("seen-new-message-all", { hasSeenMessage, senderId });
                     }
                 }
 

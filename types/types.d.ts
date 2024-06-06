@@ -30,7 +30,7 @@ declare interface FriendDetails {
     username?: string;
     profilePic?: string | null;
     isOnline?: boolean;
-    newMessages?: number;  // Adding new property here
+    newMessages?: boolean;  // Adding new property here
 }
 
 declare interface JwtPayload {
