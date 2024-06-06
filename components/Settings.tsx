@@ -1,15 +1,31 @@
+"use client";
 import Image from 'next/image'
+import { useState } from 'react';
+import { useChatSessionStore } from '@/store/useStore';
 
 const Settings = () => {
+    const { userProfilePic } = useChatSessionStore(state => ({
+        userProfilePic: state.userProfilePic
+    }));
+
+    const [imgSrc, setImgSrc] = useState<string>(userProfilePic || '/images/nickname.png');
+
+    const [values, setValues] = useState({
+        username: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+    });
     return (
-        <div className='flex flex-col items-center gap-4'>
-            <div className="relative w-[100px] h-[100px]">
+        <div className='flex flex-col items-center gap-4 h-full justify-center'>
+            <div className="relative w-[100px] h-[100px] mb-6">
                 <Image
-                    src='/profile/moana.png'
+                    src={imgSrc}
                     width={100}
                     height={100}
                     alt='Profile Picture'
                     className='rounded-full my-6'
+                    onError={() => setImgSrc('/images/nickname.png')}
                 />
                 <div className="absolute w-[100px] h-[100px] top-6 flex justify-center items-center rounded-full bg-black bg-opacity-0 hover:bg-opacity-60">
                     <Image
@@ -20,10 +36,6 @@ const Settings = () => {
                         className='opacity-0 hover:opacity-100 p-6 cursor-pointer rounded-full'
                     />
                 </div>
-            </div>
-            <div className='flex flex-col'>
-                <label htmlFor="ChangeNickname" className='mt-10'>Change Nickname</label>
-                <input id='ChangeNickname' type="text" placeholder='John Doe' className="py-2 px-4 rounded-[5px] bg-[#424242] bg-opacity-10 border-[1px] border-white/50 placeholder:text-[14px] text-[14px] outline-none w-[300px]" />
             </div>
 
             <div className='flex flex-col'>

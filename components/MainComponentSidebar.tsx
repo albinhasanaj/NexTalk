@@ -13,10 +13,11 @@ const MainComponentSidebar = ({ view, setView, socket }: MainComponentSidebarPro
     const [friends, setFriends] = useState<AccountProps[]>([]);
     const [selectedFriend, setSelectedFriend] = useState("");
 
-    const { setFriendId, setReceiverUsername, setUserId, userId } = useChatSessionStore(state => ({
+    const { setFriendId, setReceiverUsername, setUserId, userId, setUserProfilePic } = useChatSessionStore(state => ({
         setFriendId: state.setFriendId,
         setReceiverUsername: state.setReceiverUsername,
         setUserId: state.setUserId,
+        setUserProfilePic: state.setUserProfilePic,
         userId: state.userId
     }));
 
@@ -91,6 +92,7 @@ const MainComponentSidebar = ({ view, setView, socket }: MainComponentSidebarPro
         const filteredData = data.data.slice(1)
         console.log('Friends:', filteredData)
 
+        setUserProfilePic(data.data[0].profilePic);
         setUserId(data.data[0].id);
         setFriends(filteredData);
     };

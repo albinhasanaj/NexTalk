@@ -7,6 +7,7 @@ import { GoGear } from "react-icons/go";
 import toast from 'react-hot-toast';
 const Account = ({ username, nickname, profilePic, isOnline, hasIcon, isPinned: initialIsPinned, newMessages, handleClick, isFriend, id, refreshFriends }: AccountProps) => {
     const [isPinned, setIsPinned] = useState(initialIsPinned);
+    const [imgSrc, setImgSrc] = useState<string>(profilePic || '/images/nickname.png');
     const friendId = id;
 
     const togglePin = () => {
@@ -66,7 +67,9 @@ const Account = ({ username, nickname, profilePic, isOnline, hasIcon, isPinned: 
             <div className="flex justify-between items-center w-[90%]" >
                 <div onClick={handleClick} className='flex items-center hover:bg-white hover:bg-opacity-10 hover:rounded-full w-full cursor-pointer'>
                     <div className='relative mr-3'>
-                        <Image src={profilePic} alt="profile" width={50} height={50} className="rounded-full" />
+                        <Image src={imgSrc} alt="profile" width={50} height={50} className="rounded-full"
+                            onError={() => setImgSrc('/images/nickname.png')}
+                        />
                         {isFriend && (
                             <Fragment>
                                 {isOnline ? (

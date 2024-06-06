@@ -15,6 +15,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(401).json({ message: 'Unauthorized' });
     }
 
+    // get user profilepic
+    const user = await prisma.user.findUnique({
+        where: {
+            id: userId
+        }
+    });
+
+    if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+    }
+
     // Find if this user has any friends
     try {
         const friends = await prisma.friend.findMany({
@@ -69,7 +80,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         });
 
 
-        friendDetails.unshift({ id: userId, username: 'You', profilePic: '', isOnline: true });
+        friendDetails.unshift({ id: userId, username: 'You', profilePic: user?.profilePic, isOnline: true });
         // console.log(friendDetails);
 
 

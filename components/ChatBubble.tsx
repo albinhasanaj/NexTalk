@@ -1,7 +1,10 @@
+"use client";
 import Image from 'next/image'
 import { Fragment } from 'react'
+import { useState } from 'react'
 
 const ChatBubble = ({ message, isSender, profilePic, username }: ChatBubbleProps) => {
+    const [imgSrc, setImgSrc] = useState<string>(profilePic || '/images/nickname.png');
 
     return (
         <Fragment>
@@ -12,10 +15,11 @@ const ChatBubble = ({ message, isSender, profilePic, username }: ChatBubbleProps
                             <div className="w-10 rounded-full">
                                 <Image
                                     alt="Chat bubble"
-                                    src={profilePic}
+                                    src={imgSrc}
                                     width={40}
                                     height={40}
                                     className="rounded-full"
+                                    onError={() => setImgSrc('/images/nickname.png')}
                                 />
                             </div>
                         </div>
@@ -33,10 +37,11 @@ const ChatBubble = ({ message, isSender, profilePic, username }: ChatBubbleProps
                         <div className="w-10 rounded-full">
                             <Image
                                 alt="Chat bubble"
-                                src={profilePic}
+                                src={imgSrc}
                                 width={40}
                                 height={40}
                                 className="rounded-full"
+                                onError={() => setImgSrc('/images/nickname.png')}
                             />
                         </div>
                     </div>
