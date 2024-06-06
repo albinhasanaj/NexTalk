@@ -45,6 +45,6 @@ input[type="checkbox"]:checked::after {
 }
 
 .image__gradient {
-    /* use this oliver */
-
+    background: rgb(0, 0, 0);
+    background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(159, 201, 255, 0.25) 50%, rgba(0, 0, 0, 0) 100%);
 }
