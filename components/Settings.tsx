@@ -1,11 +1,14 @@
 "use client";
 import Image from 'next/image'
-import { useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import { useChatSessionStore } from '@/store/useStore';
+import toast from 'react-hot-toast';
 
 const Settings = () => {
-    const { userProfilePic } = useChatSessionStore(state => ({
-        userProfilePic: state.userProfilePic
+    const { userProfilePic, setUserProfilePic } = useChatSessionStore(state => ({
+        userProfilePic: state.userProfilePic,
+        setUserProfilePic: state.setUserProfilePic
+
     }));
 
     const [imgSrc, setImgSrc] = useState<string>(userProfilePic || '/images/nickname.png');
@@ -16,24 +19,71 @@ const Settings = () => {
         password: '',
         confirmPassword: ''
     });
+
+    const fileInputRef = useRef(null);
+
+    const handleChangeImage = async (event: ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files[0]) {
+            const file = event.target.files[0];
+            const formData = new FormData();
+            formData.append("file", file);
+
+            // Upload the file to your server or directly to the storage service
+            try {
+                const response = await fetch("/api/profile/update-profile-pic", {
+                    method: "POST",
+                    body: formData,
+                });
+
+                if (!response.ok) {
+                    throw new Error("Failed to upload image");
+                }
+
+                const data = await response.json();
+                // Assume the server returns the URL of the stored image
+                setImgSrc(data.imageUrl);
+                setUserProfilePic(data.imageUrl);
+                toast.success('Image uploaded successfully');
+            } catch (error) {
+                toast.error('Failed to upload image');
+                console.error(error);
+            }
+        }
+    };
+
+    const handleImageClick = () => {
+        if (fileInputRef.current) {
+            (fileInputRef.current as any).click();
+        }
+    };
+
     return (
         <div className='flex flex-col items-center gap-4 h-full justify-center'>
             <div className="relative w-[100px] h-[100px] mb-6">
+                <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleChangeImage}
+                    style={{ display: 'none' }}
+                    accept="image/*"
+                />
                 <Image
                     src={imgSrc}
-                    width={100}
-                    height={100}
+                    layout="fill"  // This makes the image fill the container
+                    objectFit="cover"  // This ensures the image covers the area without distorting aspect ratio
                     alt='Profile Picture'
-                    className='rounded-full my-6'
+                    className='rounded-full cursor-pointer'
                     onError={() => setImgSrc('/images/nickname.png')}
+                    onClick={handleImageClick}
                 />
-                <div className="absolute w-[100px] h-[100px] top-6 flex justify-center items-center rounded-full bg-black bg-opacity-0 hover:bg-opacity-60">
+                <div className="absolute w-[100px] h-[100px] flex justify-center items-center rounded-full bg-black bg-opacity-0 hover:bg-opacity-60">
                     <Image
                         src='/icons/edit.svg'
                         width={100}
                         height={100}
                         alt='Edit Icon'
                         className='opacity-0 hover:opacity-100 p-6 cursor-pointer rounded-full'
+                        onClick={handleImageClick}
                     />
                 </div>
             </div>
