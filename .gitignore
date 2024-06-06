@@ -35,3 +35,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# ignore all the files inside public/images/profile
+public/images/profile/*
+# except the .gitkeep file
+!public/images/profile/.gitkeep
