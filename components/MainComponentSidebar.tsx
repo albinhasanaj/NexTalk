@@ -74,7 +74,9 @@ const MainComponentSidebar = ({ view, setView, socket }: MainComponentSidebarPro
             setSelectedFriend(friendId);
             setFriendId(friendId);
             setReceiverUsername(receiverUsername);
-
+            // call socket to update the leave chat
+            socket.emit('leave-chat', { userId });
+            socket.emit("view-chat", { friendId, userId })
         }
     };
 

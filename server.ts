@@ -119,6 +119,12 @@ app.prepare().then(() => {
                     }
                 }
 
+                console.log("Receiver Active Chat", receiverActiveChat)
+                console.log("Sender Active Chat", senderActiveChat)
+
+                console.log("ReceiverID", receiverId)
+                console.log("SenderID", senderId)
+
                 if (receiverActiveChat === senderId && senderActiveChat === receiverId) {
                     // If both sender and receiver are in each other's chat, emit the message
                     io.to(receiverSocketId).emit("message", {
