@@ -4,6 +4,8 @@ import Account from './Account'
 import Image from 'next/image';
 import { Fragment, useEffect, useState } from 'react';
 import { useChatSessionStore } from '@/store/useStore';
+import debounce from 'lodash.debounce';
+import toast from 'react-hot-toast';
 
 const MainComponentSidebar = ({ view, setView, socket }: MainComponentSidebarProps) => {
     const [searchResults, setSearchResults] = useState<SearchResults[]>([]);
@@ -93,9 +95,13 @@ const MainComponentSidebar = ({ view, setView, socket }: MainComponentSidebarPro
     useEffect(() => {
         const fetchSearchResults = async () => {
             if (searchQuery) {
-                const response = await fetch(`/api/friends/search?query=${encodeURIComponent(searchQuery)}`);
-                const data = await response.json();
-                setSearchResults(data.data);
+                try {
+                    const response = await fetch(`/api/friends/search?query=${encodeURIComponent(searchQuery)}`);
+                    const data = await response.json();
+                    setSearchResults(data.data);
+                } catch (error) {
+                    toast.error('Failed to fetch search results');
+                }
             } else {
                 setSearchResults([]);
                 if (!friends.length) { // Fetch friends only if not already fetched or under specific conditions
@@ -104,8 +110,18 @@ const MainComponentSidebar = ({ view, setView, socket }: MainComponentSidebarPro
             }
         };
 
-        fetchSearchResults();
+        // Debounce the fetch function to avoid making too many requests
+        const debouncedFetch = debounce(fetchSearchResults, 300);
+        debouncedFetch();
+
+        // Cleanup the debounced function to avoid memory leaks
+        return () => {
+            debouncedFetch.cancel();
+        };
+
     }, [searchQuery, friends.length]);
+
+
 
 
     const refreshFriends = () => {
