@@ -31,6 +31,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(404).json({ message: "User not found" });
     }
 
+    // check if at least username or email or password is provided
+    if (!username && !email && !password) {
+        return res.status(400).json({ message: "At least one field is required" });
+    }
+
     if (!user.githubId && !confirmPassword) {
         return res.status(400).json({ message: "Confirm password is required" });
     }
@@ -67,9 +72,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     let passwordMatch = null;
     if (!user.githubId) {
-        passwordMatch = bcrypt.compare(password, user.password!);
+        passwordMatch = await bcrypt.compare(confirmPassword, user.password!);
+        console.log("Password match:", passwordMatch)
         if (!passwordMatch) {
-            return res.status(400).json({ message: "Invalid password" });
+            return res.status(400).json({ message: "Confirm password does not match" });
         }
     } else {
         passwordMatch = true;
