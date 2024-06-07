@@ -49,6 +49,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         // Generate a new filename with UUID
         const extension = path.extname(originalFilename);
+        console.log("File extension:", extension);
+
+        // check if the file is not a .png
+        if (extension !== '.png') {
+            return res.status(400).json({ message: "Image has to be of type .png" });
+        }
+
         const newFilename = `${randomUUID()}${extension}`;
         const newFilePath = path.join(form.uploadDir, newFilename);
 

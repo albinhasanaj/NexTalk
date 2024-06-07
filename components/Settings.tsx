@@ -42,18 +42,18 @@ const Settings = () => {
                     method: "POST",
                     body: formData,
                 });
+                const data = await response.json();
 
                 if (!response.ok) {
-                    throw new Error("Failed to upload image");
+                    throw new Error(data.message || 'Something went wrong');
                 }
 
-                const data = await response.json();
                 // Assume the server returns the URL of the stored image
                 setImgSrc(data.imageUrl);
                 setUserProfilePic(data.imageUrl);
                 toast.success('Image uploaded successfully');
-            } catch (error) {
-                toast.error('Failed to upload image');
+            } catch (error: any) {
+                toast.error(error.message);
                 console.error(error);
             }
         }
@@ -78,18 +78,17 @@ const Settings = () => {
                 body: JSON.stringify(values)
             });
 
-            const data = await response.json();
 
             if (!response.ok) {
+                const data = await response.json();
                 throw new Error(data.message || 'Something went wrong');
             }
 
             toast.success('Profile updated successfully');
-        } catch (error) {
+        } catch (error: any) {
             toast.error(error.message);
             console.error(error);
         }
-
     };
 
     return (
