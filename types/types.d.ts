@@ -30,6 +30,7 @@ declare interface FriendDetails {
     username?: string;
     profilePic?: string | null;
     isOnline?: boolean;
+    isGithubUser?: boolean;
     newMessages?: boolean;  // Adding new property here
 }
 

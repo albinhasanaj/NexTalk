@@ -14,7 +14,6 @@ const ChatPage = () => {
     return (
         <div
             className="w-full flex flex-col bg-cover bg-no-repeat"
-            style={{ backgroundImage: "url('/images/chatpagebg.png')" }}
         >
             <ChatNavbar
                 isOpen={isOpen}

@@ -16,6 +16,7 @@ const AuthSidebar = ({ href }: { href: string }) => {
                     height={300}
                     className='object-contain'
                 />
+
                 <div className='flex flex-col items-center gap-4 text-white'>
                     <h2 className='text-[1.25rem]'>Already have an account?</h2>
                     <Link

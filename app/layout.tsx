@@ -7,8 +7,8 @@ const inter = Inter({ subsets: ['latin'] })
 
 const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <html>
-      <body className={`${inter.className} bg-black scrollbar`}>
+    <html lang="en">
+      <body className={`${inter.className} bg-black scrollbar`} suppressHydrationWarning={true}>
         {children}
         <Toaster />
       </body>

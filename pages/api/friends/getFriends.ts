@@ -79,10 +79,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             friend.newMessages = hasUnseenMessage;
         });
 
+        const isGithubUser = user?.githubId ? true : false;
 
-        friendDetails.unshift({ id: userId, username: 'You', profilePic: user?.profilePic, isOnline: true });
-        // console.log(friendDetails);
 
+        friendDetails.unshift({ id: userId, username: 'You', profilePic: user?.profilePic, isOnline: true, isGithubUser: isGithubUser });
 
         return res.status(200).json({ data: friendDetails });
     } catch (error) {

@@ -15,12 +15,13 @@ const MainComponentSidebar = ({ view, setView, socket, isOpen, setIsOpen }: Main
 
     const classNames = isOpen ? "flex rounded-3xl" : "hidden"
 
-    const { setFriendId, setReceiverUsername, setUserId, userId, setUserProfilePic } = useChatSessionStore(state => ({
+    const { setFriendId, setReceiverUsername, setUserId, userId, setUserProfilePic, setIsGithubUser } = useChatSessionStore(state => ({
         setFriendId: state.setFriendId,
         setReceiverUsername: state.setReceiverUsername,
         setUserId: state.setUserId,
         setUserProfilePic: state.setUserProfilePic,
-        userId: state.userId
+        userId: state.userId,
+        setIsGithubUser: state.setIsGithubUser
     }));
 
     useEffect(() => {
@@ -99,6 +100,8 @@ const MainComponentSidebar = ({ view, setView, socket, isOpen, setIsOpen }: Main
         const filteredData = data.data.slice(1)
         console.log('Friends:', filteredData)
 
+
+        setIsGithubUser(data.data[0].isGithubUser);
         setUserProfilePic(data.data[0].profilePic);
         setUserId(data.data[0].id);
         setFriends(filteredData);
