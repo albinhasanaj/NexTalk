@@ -1,14 +1,23 @@
 "use client";
 import Image from 'next/image'
-import { Fragment, useState } from 'react'
+import { ChangeEvent, Fragment, useState } from 'react'
 import '../app/chat.css'
 import { GrUserAdd } from "react-icons/gr";
 import { GoGear } from "react-icons/go";
 import toast from 'react-hot-toast';
+
 const Account = ({ username, nickname, profilePic, isOnline, hasIcon, isPinned: initialIsPinned, newMessages, handleClick, isFriend, id, refreshFriends }: AccountProps) => {
     const [isPinned, setIsPinned] = useState(initialIsPinned);
     const [imgSrc, setImgSrc] = useState<string>(profilePic || '/images/nickname.png');
     const friendId = id;
+
+    const [values, setValues] = useState({
+        nickname: nickname || ''
+    });
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setValues({ ...values, [e.target.name]: e.target.value });
+    };
 
     const togglePin = () => {
         setIsPinned(!isPinned);
@@ -59,6 +68,30 @@ const Account = ({ username, nickname, profilePic, isOnline, hasIcon, isPinned: 
         } catch (error) {
             console.error(error);
         }
+    }
+
+    const handleUpdatenickname = async () => {
+        const { nickname } = values;
+        try {
+            const response = await fetch('/api/friends/updateNickname', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ friendId, nickname }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update nickname');
+            }
+
+            toast.success('Nickname updated successfully');
+        } catch (error) {
+            toast.error((error as Error).message);
+            console.error(error);
+        }
+
     }
 
     return (
@@ -113,7 +146,20 @@ const Account = ({ username, nickname, profilePic, isOnline, hasIcon, isPinned: 
                         {isFriend ? (
                             <Fragment>
                                 <ul tabIndex={0} className="menu bg-base-200 rounded-box dropdown-content z-[1] right-1 w-[150px]">
-                                    <li><a>Set nickname</a></li>
+                                    <li>
+                                        <input type="text" placeholder='Set nickname'
+                                            className='w-full py-2 rounded-md text-white bg-base-200 hover:cursor-text'
+                                            name="nickname"
+                                            value={values.nickname}
+                                            onChange={handleChange}
+                                            onKeyPress={(e) => {
+                                                if (e.key === 'Enter') {
+                                                    handleUpdatenickname();
+                                                }
+                                            }
+                                            }
+                                        />
+                                    </li>
                                     <li><a onClick={togglePin}>{isPinned ? 'Unpin chat' : 'Pin chat📌'}</a></li>
                                     <li>
                                         <details>

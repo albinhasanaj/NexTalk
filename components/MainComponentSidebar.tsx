@@ -79,6 +79,7 @@ const MainComponentSidebar = ({ view, setView, socket, isOpen, setIsOpen }: Main
             setSelectedFriend(friendId);
             setFriendId(friendId);
             setReceiverUsername(receiverUsername);
+            // 
             // call socket to update the leave chat
             socket.emit('leave-chat', { userId });
             socket.emit("view-chat", { friendId, userId })
@@ -97,6 +98,7 @@ const MainComponentSidebar = ({ view, setView, socket, isOpen, setIsOpen }: Main
     const fetchFriends = async () => {
         const response = await fetch('/api/friends/getFriends');
         const data = await response.json();
+        console.log(data)
         const filteredData = data.data.slice(1)
         console.log('Friends:', filteredData)
 
@@ -168,13 +170,14 @@ const MainComponentSidebar = ({ view, setView, socket, isOpen, setIsOpen }: Main
                             <Account
                                 key={friend.id}
                                 username={friend.username}
+                                nickname={friend.nickname}
                                 profilePic={friend.profilePic}
                                 isOnline={friend.isOnline}
                                 hasIcon=''
                                 isPinned={false}
                                 newMessages={friend.newMessages}
                                 handleClick={() => {
-                                    handleChatSelected(friend.id, friend.username);
+                                    handleChatSelected(friend.id, friend.nickname ? friend.nickname : friend.username);
                                 }}
                                 isFriend={true}
                                 id={friend.id}

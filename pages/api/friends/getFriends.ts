@@ -7,61 +7,52 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(405).json({ message: 'Method Not Allowed' });
     }
 
-    // Ensure you await the asynchronous getUserId function
     const userId = await getUserId(req, res);
     if (!userId) {
-        // clear any session cookies or token
-
         return res.status(401).json({ message: 'Unauthorized' });
     }
 
-    // get user profilepic
-    const user = await prisma.user.findUnique({
-        where: {
-            id: userId
-        }
-    });
-
-    if (!user) {
-        return res.status(404).json({ message: 'User not found' });
-    }
-
-    // Find if this user has any friends
     try {
+        const user = await prisma.user.findUnique({
+            where: { id: userId }
+        });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Fetch friends with nicknames
         const friends = await prisma.friend.findMany({
             where: {
                 OR: [
                     { user1Id: userId },
                     { user2Id: userId }
                 ]
-            }
-        });
-
-        // Transform the data to only send relevant user details
-        const friendIds = friends.map(friend => {
-            if (friend.user1Id === userId) {
-                return friend.user2Id;
-            } else {
-                return friend.user1Id;
-            }
-        });
-
-        // Fetch the user details of the friends
-        const friendDetails: FriendDetails[] = await prisma.user.findMany({
-            where: {
-                id: {
-                    in: friendIds
-                }
             },
-            select: {
-                id: true,
-                username: true,
-                profilePic: true,
-                isOnline: true,
+            include: {
+                user1: {
+                    select: { id: true, username: true, profilePic: true, isOnline: true }
+                },
+                user2: {
+                    select: { id: true, username: true, profilePic: true, isOnline: true }
+                }
             }
         });
 
-        // Get if there are any unseen mesages for the user
+        // Combine user details with nicknames
+        const friendDetails: FriendDetails[] = friends.map(friend => {
+            const otherUser = friend.user1Id === userId ? friend.user2 : friend.user1;
+            return {
+                id: otherUser.id,
+                username: otherUser.username,
+                profilePic: otherUser.profilePic,
+                isOnline: otherUser.isOnline,
+                newMessages: false,  // This will be updated in the next steps
+                nickname: friend.user1Id !== userId ? friend.nickname2 : friend.nickname1
+            };
+        });
+
+        // Retrieve any unseen messages
         const unseenMessages = await prisma.message.findMany({
             where: {
                 receiverId: userId,
@@ -72,17 +63,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             }
         });
 
-
-        // Update the friendDetails to include the newMessages true or false
+        // Mark friends with new messages
         friendDetails.forEach(friend => {
-            const hasUnseenMessage = unseenMessages.some(message => message.senderId === friend.id);
-            friend.newMessages = hasUnseenMessage;
+            friend.newMessages = unseenMessages.some(message => message.senderId === friend.id);
         });
 
-        const isGithubUser = user?.githubId ? true : false;
+        const isGithubUser = !!user.githubId;
 
-
-        friendDetails.unshift({ id: userId, username: 'You', profilePic: user?.profilePic, isOnline: true, isGithubUser: isGithubUser });
+        friendDetails.unshift({ id: userId, username: 'You', profilePic: user?.profilePic, isOnline: true, isGithubUser });
 
         return res.status(200).json({ data: friendDetails });
     } catch (error) {

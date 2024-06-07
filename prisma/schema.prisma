@@ -29,6 +29,8 @@ model Friend {
   user2     User     @relation(name: "UserBefriended", fields: [user2Id], references: [id])
   user2Id   String
   createdAt DateTime @default(now())
+  nickname1 String?
+  nickname2 String? //generate npx prisma migrate dev --name add-nickName2-to-friend
 
   @@unique([user1Id, user2Id])
 }
