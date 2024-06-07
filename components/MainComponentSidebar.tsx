@@ -7,11 +7,13 @@ import { useChatSessionStore } from '@/store/useStore';
 import debounce from 'lodash.debounce';
 import toast from 'react-hot-toast';
 
-const MainComponentSidebar = ({ view, setView, socket }: MainComponentSidebarProps) => {
+const MainComponentSidebar = ({ view, setView, socket, isOpen, setIsOpen }: MainComponentSidebarProps) => {
     const [searchResults, setSearchResults] = useState<SearchResults[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [friends, setFriends] = useState<AccountProps[]>([]);
     const [selectedFriend, setSelectedFriend] = useState("");
+
+    const classNames = isOpen ? "flex rounded-3xl" : "hidden"
 
     const { setFriendId, setReceiverUsername, setUserId, userId, setUserProfilePic } = useChatSessionStore(state => ({
         setFriendId: state.setFriendId,
@@ -58,6 +60,7 @@ const MainComponentSidebar = ({ view, setView, socket }: MainComponentSidebarPro
 
 
     const settingsSelected = () => {
+        setIsOpen(prev => !prev);
         if (view === 'Settings') {
             setView('NoChatSelected');
         } else {
@@ -66,6 +69,7 @@ const MainComponentSidebar = ({ view, setView, socket }: MainComponentSidebarPro
     };
 
     const handleChatSelected = (friendId: string, receiverUsername: string) => {
+        setIsOpen(prev => !prev);
         if (view === 'ChatSelected' && selectedFriend === friendId) {
             setView('NoChatSelected');
             setSelectedFriend('');
@@ -81,6 +85,7 @@ const MainComponentSidebar = ({ view, setView, socket }: MainComponentSidebarPro
     };
 
     const handleLogoutSelected = () => {
+        setIsOpen(prev => !prev);
         if (view === 'Logout') {
             setView('NoChatSelected');
         } else {
@@ -136,7 +141,7 @@ const MainComponentSidebar = ({ view, setView, socket }: MainComponentSidebarPro
     };
 
     return (
-        <div className="hidden md:flex w-[300px] lg:w-[350px] h-[600px] lg:h-[750px] rounded-l-3xl rounded-tr-none rounded-br-none rounded-bl-3xl flex-shrink-0 border border-white/54 bg-white/7 backdrop-blur-[7.5px] flex-col justify-between bg-[rgba(255,255,255,0.07)] gap-10"
+        <div className={`${classNames} md:flex w-[300px] lg:w-[350px] h-[600px] lg:h-[750px] rounded-l-3xl md:rounded-tr-none md:rounded-br-none rounded-bl-3xl flex-shrink-0 border border-white/54 bg-white/7 backdrop-blur-[7.5px] flex-col justify-between bg-[rgba(255,255,255,0.07)] gap-10`}
         >
             <Searchbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
             {/* LEFT SIDE */}

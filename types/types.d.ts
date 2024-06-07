@@ -44,12 +44,15 @@ declare interface MainComponentSidebarProps {
     view: string;
     setView: (view: string) => void;
     socket: SocketIOClient.Socket;
+    isOpen: boolean;
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 declare interface MainComponentProps {
     isConnected: boolean;
     view: string;
     socket: SocketIOClient.Socket;
+    isOpen: boolean;
 };
 
 declare interface SearchbarProps {
