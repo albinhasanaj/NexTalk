@@ -12,10 +12,11 @@ const ChatSelected = ({ socket, isConnected }: ChatSelectedProps) => {
     const [value, setValue] = useState<string>('');
     const [messages, setMessages] = useState<Message[]>([]);
 
-    const { friendId, userId, receiverUsername } = useChatSessionStore(state => ({
+    const { friendId, userId, receiverUsername, receiverNickname } = useChatSessionStore(state => ({
         friendId: state.friendId,
         userId: state.userId,
-        receiverUsername: state.receiverUsername
+        receiverUsername: state.receiverUsername,
+        receiverNickname: state.receiverNickname
     }));
 
     const { emojis,
@@ -119,7 +120,7 @@ const ChatSelected = ({ socket, isConnected }: ChatSelectedProps) => {
                 {messages.map((message: Message, index: number) => (
                     <Fragment key={index}>
                         <ChatBubble
-                            username={message.isSender ? "You" : receiverUsername}
+                            username={message.isSender ? "You" : receiverNickname ? receiverNickname : receiverUsername}
                             message={message.content}
                             isSender={message.isSender}
                             profilePic={message.sender ? message.sender.profilePic : ''}
