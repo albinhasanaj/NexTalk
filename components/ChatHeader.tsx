@@ -39,9 +39,9 @@ const ChatHeader = () => {
         , []);
 
     return (
-        <header className='h-[4rem] bg-[#424141] w-full md:rounded-tl-none rounded-bl-none rounded-tr-3xl flex justify-between items-center px-4 rounded-tl-3xl'>
+        <header className='py-4 px-4 text-[14px] md:text-[16px] bg-[#424141] w-full md:rounded-tl-none rounded-bl-none rounded-tr-3xl flex justify-between items-center rounded-tl-3xl space-x-2'>
             <span>{dateTime.date}</span>
-            <span className='text-[#C0C0C0] font-bold'>Talking to: {username}</span>
+            <span className='text-[#C0C0C0] font-bold overflow-hidden whitespace-nowrap overflow-ellipsis'>Talking to: {username}</span>
             <span>{dateTime.time}</span>
         </header>
     )

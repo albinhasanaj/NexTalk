@@ -123,17 +123,17 @@ const Settings = () => {
             </div>
 
 
-            <form onSubmit={handleSubmit} className="flex flex-col items-center gap-6">
+            <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4 md:gap-6 text-[12px] md:text-[16px]">
                 <div className='flex flex-col'>
                     <label htmlFor="ChangeUsername">Change Username</label>
-                    <input id='ChangeUsername' type="text" placeholder='johndoe' className="py-2 px-4 rounded-[5px] bg-[#424242] bg-opacity-10 border-[1px] border-white/50 placeholder:text-[14px] text-[14px] outline-none w-[300px]"
+                    <input id='ChangeUsername' type="text" placeholder='johndoe' className="py-1 md:py-2 px-4 rounded-[5px] bg-[#424242] bg-opacity-10 border-[1px] border-white/50 placeholder:text-[14px] text-[14px] outline-none w-[250px] md:w-[300px]"
                         name='username'
                         onChange={handleChange}
                     />
                 </div>
                 <div className='flex flex-col'>
                     <label htmlFor="ChangeEmailAddress">Change Email Address</label>
-                    <input id='ChangeEmailAddress' type="email" placeholder='johndoe@gmail.com' className="py-2 px-4 rounded-[5px] bg-[#424242] bg-opacity-10 border-[1px] border-white/50 placeholder:text-[14px] text-[14px] outline-none w-[300px]"
+                    <input id='ChangeEmailAddress' type="email" placeholder='johndoe@gmail.com' className="py-1 md:py-2 px-4 rounded-[5px] bg-[#424242] bg-opacity-10 border-[1px] border-white/50 placeholder:text-[14px] text-[14px] outline-none w-[250px] md:w-[300px]"
                         name='email'
                         onChange={handleChange}
                     />
@@ -143,7 +143,7 @@ const Settings = () => {
                     <Fragment>
                         <div className='flex flex-col'>
                             <label htmlFor="ChangePassword">Change Password</label>
-                            <input id='ChangePassword' type="password" placeholder='******' className="py-2 px-4 rounded-[5px] bg-[#424242] bg-opacity-10 border-[1px] border-white/50 placeholder:text-[14px] text-[14px] outline-none w-[300px]"
+                            <input id='ChangePassword' type="password" placeholder='******' className="py-1 md:py-2 px-4 rounded-[5px] bg-[#424242] bg-opacity-10 border-[1px] border-white/50 placeholder:text-[14px] text-[14px] outline-none w-[250px] md:w-[300px]"
                                 name='password'
                                 onChange={handleChange}
                             />
@@ -151,14 +151,14 @@ const Settings = () => {
 
                         <div className='flex flex-col'>
                             <label htmlFor="ConfirmPassword">Confirm Password*</label>
-                            <input id='ConfirmPassword' type="password" placeholder='******' className="py-2 px-4 rounded-[5px] bg-[#424242] bg-opacity-10 border-[1px] border-white/50 placeholder:text-[14px] text-[14px] outline-none w-[300px]"
+                            <input id='ConfirmPassword' type="password" placeholder='******' className="py-1 md:py-2 px-4 rounded-[5px] bg-[#424242] bg-opacity-10 border-[1px] border-white/50 placeholder:text-[14px] text-[14px] outline-none w-[250px] md:w-[300px]"
                                 name='confirmPassword'
                                 onChange={handleChange}
                             />
                         </div>
                     </Fragment>
                 )}
-                <button className='bg-[#4D4D4D] w-[20rem] h-[3rem] rounded-[1rem] outline-none placeholder-[rgba(255,255,255,0.5)] text-white text-[0.75rem] font-normal tracking-[0.0375rem] pl-[1rem] mt-[1rem] ring-1 ring-transparent hover:ring-white/50 hover:bg-[#585858] transition-all duration-200 ease-in-out'>Submit Changes</button>
+                <button className='bg-[#4D4D4D] w-[250px] md:w-[300px] py-2 rounded-2xl outline-none placeholder-[rgba(255,255,255,0.5)] text-white text-[12px] md:text-[16px] font-normal tracking-wider px-4 mt-4 ring-1 ring-transparent hover:ring-white/50 hover:bg-[#585858] transition-all duration-200 ease-in-out'>Submit Changes</button>
             </form>
         </div>
     )

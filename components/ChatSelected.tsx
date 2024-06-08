@@ -115,7 +115,7 @@ const ChatSelected = ({ socket, isConnected }: ChatSelectedProps) => {
 
     return (
         <div className='flex flex-col w-full h-full justify-between relative overflow-hidden'>
-            <div className="overflow-auto scrollbar px-6 mb-6">
+            <div className="overflow-x-hidden scrollbar px-6 mb-6">
                 {messages.map((message: Message, index: number) => (
                     <Fragment key={index}>
                         <ChatBubble
@@ -134,22 +134,31 @@ const ChatSelected = ({ socket, isConnected }: ChatSelectedProps) => {
             ))}
 
             <div className='flex w-full justify-center relative'>
-                <input type="text" placeholder='Send a message' className='w-[85%] h-11 mb-4 rounded-[10px] bg-[#424141] border-[1px] border-solid border-[#353434] pl-3 placeholder-[rgba(255,255,255,0.50)] text-[0.8rem]'
+                {/* <input type="text" placeholder='Send a message' className='w-[85%] h-11 mb-4 rounded-[10px] bg-[#424141] border-[1px] border-solid border-[#353434] pl-3 placeholder-[rgba(255,255,255,0.50)] text-[0.8rem]'
                     value={value}
                     onChange={handleChange}
                     onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-                />
-                <Image src='/icons/send-message.svg' width={24} height={24} alt='send' className='absolute left-[82%] top-[18%] cursor-pointer'
-                    onClick={handleSend}
-                />
-                <Image
-                    src='/icons/party-popper.svg'
-                    width={24}
-                    height={24}
-                    alt='party-popper'
-                    className='absolute left-[76%] top-[18%] cursor-pointer hover:-translate-y-0.5 transition-all'
-                    onClick={() => setShowEmojiMenu(!showEmojiMenu)}
-                />
+                /> */}
+                <label className="input bg-[#424141] flex items-center gap-2 w-[90%] md:w-[80%] mb-4">
+                    <input type="text" className="grow text-[12px] md:text-[14px]" placeholder="Send a message"
+                        value={value}
+                        onChange={handleChange}
+                        onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+                    />
+                    <div className="flex gap-4">
+                        <Image
+                            src='/icons/party-popper.svg'
+                            width={24}
+                            height={24}
+                            alt='party-popper'
+                            className='cursor-pointer hover:-translate-y-0.5 transition-all'
+                            onClick={() => setShowEmojiMenu(!showEmojiMenu)}
+                        />
+                        <Image src='/icons/send-message.svg' width={24} height={24} alt='send' className='cursor-pointer hover:-translate-y-0.5 transition-all'
+                            onClick={handleSend}
+                        />
+                    </div>
+                </label>
                 {showEmojiMenu && <EmojiMenu triggerEffect={triggerEffect} sendReaction={handleSendReaction} />}
             </div>
         </div>

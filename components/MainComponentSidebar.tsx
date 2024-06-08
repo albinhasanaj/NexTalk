@@ -153,7 +153,7 @@ const MainComponentSidebar = ({ view, setView, isOpen, setIsOpen, socket }: Main
         >
             <Searchbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
             {/* LEFT SIDE */}
-            <div className='flex flex-col h-full gap-10 scrollbar mb-auto overflow-auto'>
+            <div className='flex flex-col h-full gap-10 scrollbar mb-auto overflow-x-hidden overflow-y-auto'>
                 {/* if searching, display searched only, else display your Account */}
                 {searchResults.length > 0 ? (
                     <Fragment>

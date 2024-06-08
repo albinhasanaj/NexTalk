@@ -23,11 +23,11 @@ const ChatBubble = ({ message, isSender, profilePic, username }: ChatBubbleProps
                                 />
                             </div>
                         </div>
-                        <div className="chat-header">
+                        <div className="chat-header overflow-ellipsis">
                             {username}
                             {/* <time className="text-xs opacity-50">12:46</time> */}
                         </div>
-                        <div className="chat-bubble bg-blue-500 text-white break-words text-start"
+                        <div className="chat-bubble bg-blue-500 text-white break-words text-start text-[14px] md:text-[16px]"
                         >{message}</div>
                     </div>
                 </Fragment>
@@ -45,11 +45,11 @@ const ChatBubble = ({ message, isSender, profilePic, username }: ChatBubbleProps
                             />
                         </div>
                     </div>
-                    <div className="chat-header">
+                    <div className="chat-header overflow-ellipsis">
                         {username}
                         {/* <time className="text-xs opacity-50">12:45</time> */}
                     </div>
-                    <div className="chat-bubble text-white break-all">{message}</div>
+                    <div className="chat-bubble text-white break-all text-[14px] md:text-[16px]">{message}</div>
                 </div>
             )}
         </Fragment>

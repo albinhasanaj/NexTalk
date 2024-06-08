@@ -97,6 +97,12 @@ const Account = ({ username, nickname, profilePic, isOnline, hasIcon, isPinned, 
 
     const handleUpdatenickname = async () => {
         const { nickname } = values;
+
+        if (nickname.length > 20) {
+            toast.error('Nickname must be less than 20 characters');
+            return;
+        }
+
         try {
             socket.emit('update-nickname', userId, friendId, nickname);
         } catch (error) {
