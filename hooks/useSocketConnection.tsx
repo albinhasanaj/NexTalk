@@ -14,6 +14,7 @@ const useSocketConnection = () => {
 
     useEffect(() => {
 
+        // Set the socket instance in the store
         if (!socket.connected) {
             socket.connect();
         }

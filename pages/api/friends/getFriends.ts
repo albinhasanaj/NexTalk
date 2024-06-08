@@ -48,8 +48,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 profilePic: otherUser.profilePic,
                 isOnline: otherUser.isOnline,
                 newMessages: false,  // This will be updated in the next steps
-                nickname: friend.user1Id !== userId ? friend.nickname2 : friend.nickname1
+                nickname: friend.user1Id !== userId ? friend.nickname2 : friend.nickname1,
+                isPinned: friend.user1Id !== userId ? friend.user1Pinned : friend.user2Pinned
             };
+        });
+
+        // sort friends by pinned status
+        friendDetails.sort((a, b) => {
+            if (a.isPinned && !b.isPinned) {
+                return -1;
+            }
+            if (!a.isPinned && b.isPinned) {
+                return 1;
+            }
+            return 0;
         });
 
         // Retrieve any unseen messages

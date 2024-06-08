@@ -1,14 +1,18 @@
 "use client";
 import Image from 'next/image'
-import { ChangeEvent, Fragment, useState } from 'react'
+import { ChangeEvent, Fragment, useEffect, useState } from 'react'
 import '../app/chat.css'
 import { GrUserAdd } from "react-icons/gr";
 import { GoGear } from "react-icons/go";
 import toast from 'react-hot-toast';
+import { useChatSessionStore } from '@/store/useStore';
 
-const Account = ({ username, nickname, profilePic, isOnline, hasIcon, isPinned: initialIsPinned, newMessages, handleClick, isFriend, id, refreshFriends }: AccountProps) => {
-    const [isPinned, setIsPinned] = useState(initialIsPinned);
+const Account = ({ username, nickname, profilePic, isOnline, hasIcon, isPinned, newMessages, handleClick, isFriend, id, refreshFriends, socket }: AccountProps) => {
     const [imgSrc, setImgSrc] = useState<string>(profilePic || '/images/nickname.png');
+    const { userId, setReceiverUsername } = useChatSessionStore(state => state);
+
+    const [nickNameSocket, setNickNameSocket] = useState<string | null>('');
+    const [isPinnedSocket, setIsPinnedSocket] = useState<boolean>(isPinned || false);
     const friendId = id;
 
     const [values, setValues] = useState({
@@ -17,10 +21,6 @@ const Account = ({ username, nickname, profilePic, isOnline, hasIcon, isPinned: 
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setValues({ ...values, [e.target.name]: e.target.value });
-    };
-
-    const togglePin = () => {
-        setIsPinned(!isPinned);
     };
 
     const handleAddFriend = async () => {
@@ -70,29 +70,53 @@ const Account = ({ username, nickname, profilePic, isOnline, hasIcon, isPinned: 
         }
     }
 
+
+    useEffect(() => {
+        if (!socket) {
+            return;
+        }
+        socket.on('updated-nickname', (friendId: string, nickname: string) => {
+            if (friendId === id) {
+                if (nickname === "") {
+                    setNickNameSocket(null);
+                } else {
+                    setNickNameSocket(nickname);
+                    setReceiverUsername(nickname);
+                }
+            }
+
+        });
+
+        return () => {
+            if (socket) {
+                socket.off('updated-nickname');
+            };
+
+        }
+    }, [socket]);
+
     const handleUpdatenickname = async () => {
         const { nickname } = values;
         try {
-            const response = await fetch('/api/friends/updateNickname', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include',
-                body: JSON.stringify({ friendId, nickname }),
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to update nickname');
-            }
-
-            toast.success('Nickname updated successfully');
+            socket.emit('update-nickname', userId, friendId, nickname);
         } catch (error) {
-            toast.error((error as Error).message);
             console.error(error);
-        }
+            toast.error('Failed to update nickname');
 
+        }
     }
+
+    const togglePin = async () => {
+        const newPinState = !isPinnedSocket;
+        setIsPinnedSocket(newPinState);
+        try {
+            socket.emit('update-pin', userId, friendId, !isPinned);
+        } catch (error) {
+            console.error(error);
+            toast.error('Failed to update pin');
+            setIsPinnedSocket(!newPinState);
+        }
+    };
 
     return (
         <div className='flex flex-col items-center w-full gap-4'>
@@ -116,8 +140,11 @@ const Account = ({ username, nickname, profilePic, isOnline, hasIcon, isPinned: 
                     </div>
                     <div className='flex flex-col'>
                         <div className='flex items-center text-white text-nowrap relative'>
-                            <span>{nickname ? nickname : username}</span>
-                            {isPinned && <sup className="absolute left-[100%] top-[10%]">📌</sup>}
+                            <span>{nickNameSocket ? nickNameSocket : nickname ? nickname : username}</span>
+                            {isPinnedSocket && (
+                                <sup className="absolute left-[100%] top-[10%]">📌</sup>
+                            )}
+
                         </div>
                         {isFriend && (
                             <span className={`text-sm ${newMessages! ? 'text-blue-500' : 'text-gray-500'}`}>
@@ -156,22 +183,11 @@ const Account = ({ username, nickname, profilePic, isOnline, hasIcon, isPinned: 
                                                 if (e.key === 'Enter') {
                                                     handleUpdatenickname();
                                                 }
-                                            }
-                                            }
+                                            }}
                                         />
                                     </li>
-                                    <li><a onClick={togglePin}>{isPinned ? 'Unpin chat' : 'Pin chat📌'}</a></li>
-                                    <li>
-                                        <details>
-                                            <summary className="">EMOJI</summary>
-                                            <ul>
-                                                <li><a>1</a></li>
-                                                <li><a>2</a></li>
-                                                <li><a>3</a></li>
-                                            </ul>
-                                        </details>
-                                    </li>
-                                    <li><a
+                                    <li><a onClick={togglePin}>{isPinnedSocket ? 'Unpin' : 'Pin chat📌'}</a></li>
+                                    <li className="mt-4"><a
                                         onClick={handleUnfriend}
                                     >Unfriend</a></li>
                                 </ul>

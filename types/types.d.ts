@@ -23,6 +23,7 @@ declare interface AccountProps {
     handleClick?: () => void;
     id: string;
     refreshFriends?: () => void;
+    socket?: SocketIOClient.Socket;
 };
 
 declare interface FriendDetails {
@@ -32,6 +33,7 @@ declare interface FriendDetails {
     isOnline?: boolean;
     isGithubUser?: boolean;
     newMessages?: boolean;  // Adding new property here
+    isPinned?: boolean;
 }
 
 declare interface JwtPayload {
@@ -44,8 +46,8 @@ declare interface JwtPayload {
 declare interface MainComponentSidebarProps {
     view: string;
     setView: (view: string) => void;
-    socket: SocketIOClient.Socket;
     isOpen: boolean;
+    socket: SocketIOClient.Socket;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 

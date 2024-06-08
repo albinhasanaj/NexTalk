@@ -7,7 +7,7 @@ import { useChatSessionStore } from '@/store/useStore';
 import debounce from 'lodash.debounce';
 import toast from 'react-hot-toast';
 
-const MainComponentSidebar = ({ view, setView, socket, isOpen, setIsOpen }: MainComponentSidebarProps) => {
+const MainComponentSidebar = ({ view, setView, isOpen, setIsOpen, socket }: MainComponentSidebarProps) => {
     const [searchResults, setSearchResults] = useState<SearchResults[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [friends, setFriends] = useState<AccountProps[]>([]);
@@ -40,6 +40,7 @@ const MainComponentSidebar = ({ view, setView, socket, isOpen, setIsOpen }: Main
         };
 
         socket.on('friend-status-changed', handleStatusChange);
+        socket.on("fetch-friends", fetchFriends);
 
         const handleSeenNewMessage = ({ hasSeenMessage, senderId }: { hasSeenMessage: number, senderId: string }) => {
 
@@ -56,6 +57,8 @@ const MainComponentSidebar = ({ view, setView, socket, isOpen, setIsOpen }: Main
 
         return () => {
             socket.off('friend-status-changed', handleStatusChange);
+            socket.off("fetch-friends", fetchFriends);
+            socket.off("seen-new-message-all", handleSeenNewMessage);
         };
     }, [userId, socket]);
 
@@ -169,12 +172,13 @@ const MainComponentSidebar = ({ view, setView, socket, isOpen, setIsOpen }: Main
                         {friends.map((friend) => (
                             <Account
                                 key={friend.id}
+                                socket={socket}
                                 username={friend.username}
                                 nickname={friend.nickname}
                                 profilePic={friend.profilePic}
                                 isOnline={friend.isOnline}
                                 hasIcon=''
-                                isPinned={false}
+                                isPinned={friend.isPinned}
                                 newMessages={friend.newMessages}
                                 handleClick={() => {
                                     handleChatSelected(friend.id, friend.nickname ? friend.nickname : friend.username);

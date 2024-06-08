@@ -143,9 +143,94 @@ app.prepare().then(() => {
                     });
                 }
 
-
             } catch (error) {
                 console.error("Failed to save message:", error);
+                // Handle error appropriately
+            }
+        });
+
+        socket.on("update-nickname", async (userId, friendId, nickname) => {
+            console.log("Updated nickname:", userId, friendId, nickname);
+
+            try {
+                const friend = await prisma.friend.findFirst({
+                    where: {
+                        OR: [
+                            { user1Id: userId, user2Id: friendId },
+                            { user1Id: friendId, user2Id: userId }
+                        ]
+                    }
+                });
+
+                if (!friend) {
+                    console.log("Friend not found");
+                    return;
+                }
+
+                const isUser1 = friend.user1Id === userId;
+
+                const updatedFriend = await prisma.friend.update({
+                    where: { id: friend.id },
+                    data: isUser1 ? { nickname1: nickname } : { nickname2: nickname }
+                });
+
+                if (!updatedFriend) {
+                    console.log("Friend relation not updated");
+                    return;
+                }
+
+                const userSocketId = userSockets.get(userId);
+                console.log("User Socket ID:", userSocketId);
+                if (userSocketId) {
+                    io.to(userSocketId).emit("updated-nickname", friendId, nickname);
+                }
+
+            } catch (error) {
+                console.error("Failed to update nickname:", error);
+                // Handle error appropriately
+            }
+        });
+
+        socket.on("update-pin", async (userId, friendId, isPinned) => {
+            console.log("Updated pin:", userId, friendId, isPinned);
+            try {
+                const friend = await prisma.friend.findFirst({
+                    where: {
+                        OR: [
+                            { user1Id: userId, user2Id: friendId },
+                            { user1Id: friendId, user2Id: userId }
+                        ]
+                    }
+                });
+
+                if (!friend) {
+                    console.log("Friend not found");
+                    return;
+                }
+
+                const isUser1 = friend.user1Id === userId;
+
+                const updatedFriend = await prisma.friend.update({
+                    where: { id: friend.id },
+                    data: !isUser1 ? { user1Pinned: isPinned } : { user2Pinned: isPinned },
+                });
+
+                if (!updatedFriend) {
+                    console.log("Friend relation not updated");
+                    return;
+                }
+
+                console.log("Updated friend relation:", updatedFriend);
+
+                const userSocketId = userSockets.get(userId);
+                console.log("User Socket ID:", userSocketId);
+
+                if (userSocketId) {
+                    io.to(userSocketId).emit("fetch-friends");
+                }
+
+            } catch (error) {
+                console.error("Failed to update pin:", error);
                 // Handle error appropriately
             }
         });
