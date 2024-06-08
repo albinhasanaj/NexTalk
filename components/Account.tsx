@@ -9,7 +9,11 @@ import { useChatSessionStore } from '@/store/useStore';
 
 const Account = ({ username, nickname, profilePic, isOnline, hasIcon, isPinned, newMessages, handleClick, isFriend, id, refreshFriends, socket }: AccountProps) => {
     const [imgSrc, setImgSrc] = useState<string>(profilePic || '/images/nickname.png');
-    const { userId, setReceiverUsername } = useChatSessionStore(state => state);
+    const { userId, setReceiverNickname, receiverNickname } = useChatSessionStore(state => ({
+        userId: state.userId,
+        setReceiverNickname: state.setReceiverNickname,
+        receiverNickname: state.receiverNickname
+    }));
 
     const [nickNameSocket, setNickNameSocket] = useState<string | null>('');
     const [isPinnedSocket, setIsPinnedSocket] = useState<boolean>(isPinned || false);
@@ -79,9 +83,10 @@ const Account = ({ username, nickname, profilePic, isOnline, hasIcon, isPinned, 
             if (friendId === id) {
                 if (nickname === "") {
                     setNickNameSocket(null);
+                    setReceiverNickname(username);
                 } else {
                     setNickNameSocket(nickname);
-                    setReceiverUsername(nickname);
+                    setReceiverNickname(nickname);
                 }
             }
 
@@ -146,7 +151,7 @@ const Account = ({ username, nickname, profilePic, isOnline, hasIcon, isPinned, 
                     </div>
                     <div className='flex flex-col'>
                         <div className='flex items-center text-white text-nowrap relative'>
-                            <span>{nickNameSocket ? nickNameSocket : nickname ? nickname : username}</span>
+                            <span>{nickNameSocket ? nickNameSocket : receiverNickname ? receiverNickname : nickname ? nickname : username}</span>
                             {isPinnedSocket && (
                                 <sup className="absolute left-[100%] top-[10%]">📌</sup>
                             )}
