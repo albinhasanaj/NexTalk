@@ -19,7 +19,7 @@ const ChatPage = () => {
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
             />
-            <main className="flex h-[calc(100vh-128px)] md:h-screen w-full items-center justify-center">
+            <main className="flex h-[calc(100vh-180px)] md:h-screen w-full items-center justify-center">
                 <MainComponentSidebar
                     socket={socket}
                     view={view}
