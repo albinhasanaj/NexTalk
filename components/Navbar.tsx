@@ -26,7 +26,7 @@ const Navbar = () => {
             </div>
 
             {/* Mobile Navbar */}
-            <div className={`md:hidden flex fixed top-0 w-full transition-transform duration-300 ${scrollDirection === 'down' ? '-translate-y-[150%]' : 'translate-y-0'}`}>
+            <div className={`md:hidden flex fixed top-0 w-full transition-transform duration-300 ${scrollDirection === 'down' && scrollY > 0 ? '-translate-y-[150%]' : 'translate-y-0'}`}>
                 <div className="w-full flex items-center relative justify-between pr-2 pl-3 top-5 bg-opacity-90">
                     <Link href="/" className="text-white text-2xl font-bold">NexTalk</Link>
                     <Image

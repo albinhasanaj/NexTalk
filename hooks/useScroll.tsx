@@ -1,4 +1,3 @@
-// hooks/useScroll.js
 import { useState, useEffect } from 'react';
 
 const useScroll = () => {
@@ -10,9 +9,13 @@ const useScroll = () => {
 
         const updateScroll = () => {
             const currentScrollY = window.pageYOffset;
+
+            if (Math.abs(currentScrollY - lastScrollY) > 1) {
+                setScrollDirection(currentScrollY > lastScrollY ? 'down' : 'up');
+                lastScrollY = currentScrollY;
+            }
+
             setScrollY(currentScrollY);
-            setScrollDirection(currentScrollY > lastScrollY ? 'down' : 'up');
-            lastScrollY = currentScrollY;
         };
 
         window.addEventListener('scroll', updateScroll);
