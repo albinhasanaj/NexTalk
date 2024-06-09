@@ -28,14 +28,14 @@ const Navbar = () => {
             {/* Mobile Navbar */}
             <div className={`md:hidden flex fixed top-0 w-full transition-transform duration-300 ${scrollDirection === 'down' ? '-translate-y-[150%]' : 'translate-y-0'}`}>
                 <div className="w-full flex items-center relative justify-between pr-2 pl-3 top-5 bg-opacity-90">
-                    <h1 className="text-white text-2xl font-bold">NexTalk</h1>
+                    <Link href="/" className="text-white text-2xl font-bold">NexTalk</Link>
                     <Image
                         src={isOpen ? "/icons/cross.svg" : "/icons/burger-menu.svg"}
                         alt="Hamburger Menu"
                         width={64}
                         height={64}
                         onClick={() => setIsOpen(prev => !prev)}
-                        className="cursor-pointer"
+                        className="cursor-pointer xs:h-[64px] xs:w-[64px] h-[48px] w-[48px]"
                     />
                     {isOpen && (
                         <div className="absolute top-[60px] left-0 w-full h-[calc(100vh-60px)] bg-black bg-opacity-80 flex flex-col items-center justify-center overflow-hidden transition-all duration-300">

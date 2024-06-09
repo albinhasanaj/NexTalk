@@ -41,7 +41,7 @@ const TopHP = () => {
             </div>
 
             {/* MOBILE */}
-            <div className='md2:hidden relative w-full h-screen flex justify-center pt-10'>
+            <div className='md2:hidden relative w-full h-screen flex justify-center pt-[7rem]'>
                 <div className='max-w-[930px] flex items-center w-full flex-col mt-10'>
                     <div className='flex flex-col gap-4'>
                         <div className='flex flex-col items-center'>
