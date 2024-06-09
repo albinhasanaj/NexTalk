@@ -42,7 +42,7 @@ const TopHP = () => {
 
             {/* MOBILE */}
             <div className='md2:hidden relative w-full h-screen flex justify-center pt-10'>
-                <div className='max-w-[930px] flex items-center w-full flex-col'>
+                <div className='max-w-[930px] flex items-center w-full flex-col mt-10'>
                     <div className='flex flex-col gap-4'>
                         <div className='flex flex-col items-center'>
                             <h1 className=' text-white font-bold text-center text-[1.5rem] leading-7 xs:text-[2rem] xs:leading-9'>REAL TIME <br />COMMUNICATION</h1>

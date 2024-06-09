@@ -1,3 +1,4 @@
+import Footer from '@/components/Footer'
 import MidHP from '@/components/MidHP'
 import Navbar from '@/components/Navbar'
 import TopHP from '@/components/TopHP'
@@ -9,6 +10,7 @@ const HomePage = () => {
             <Navbar />
             <TopHP />
             <MidHP />
+            <Footer />
         </div>
     )
 }

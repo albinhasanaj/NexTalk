@@ -15,12 +15,12 @@ const Navbar = () => {
     return (
         <nav className={`w-full z-10 fixed`}>
             <div className={`hidden md:flex justify-between items-center px-20 transition-all duration-300 ${scrollY > 0 ? 'py-3 bg-[#222] bg-opacity-50' : 'py-6 bg-transparent'}`}>
-                <h1 className="text-white text-3xl font-bold">NexTalk</h1>
+                <Link href="/" className="text-white text-3xl font-bold hover:text-[rgba(255,255,255,0.8)]">NexTalk</Link>
                 <ul className='flex gap-6 lg:gap-10 items-center text-white'>
-                    <Link href="/" className="text-[1.2rem] hover:underline"> Home </Link>
-                    <Link href="/about" className="text-[1.2rem] hover:underline"> About </Link>
-                    <Link href="/contact" className="text-[1.2rem] hover:underline"> Contact </Link>
-                    <Link href="/login" className="text-[1.2rem] hover:underline"> Log In </Link>
+                    <Link href="/" className="text-[1.2rem] hover:underline hover:text-[rgba(255,255,255,0.8)]"> Home </Link>
+                    <Link href="/about" className="text-[1.2rem] hover:underline hover:text-[rgba(255,255,255,0.8)]"> About </Link>
+                    <Link href="/contact" className="text-[1.2rem] hover:underline hover:text-[rgba(255,255,255,0.8)]"> Contact </Link>
+                    <Link href="/login" className="text-[1.2rem] hover:underline hover:text-[rgba(255,255,255,0.8)]"> Log In </Link>
                     <TryForFreeBtn />
                 </ul>
             </div>
