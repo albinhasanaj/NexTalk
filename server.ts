@@ -284,8 +284,8 @@ async function notifyFriendsStatusChange(userId: string, isOnline: boolean, io: 
     });
 
     // Optionally, update the user's online status in the database
-    await prisma.user.update({
-        where: { id: userId },
-        data: { isOnline }
-    });
+    // await prisma.user.update({
+    //     where: { id: userId },
+    //     data: { isOnline }
+    // });
 }
