@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 import { useEffect, useState } from 'react';
-import { useChatSessionStore } from '@/store/useStore';
+import { useUserStore } from '@/store/useStore';
 
 // Create a singleton socket connection instance outside the hook
 const socket = io(process.env.NEXT_PUBLIC_BASE_URL || "localhost:5000", {
@@ -9,7 +9,7 @@ const socket = io(process.env.NEXT_PUBLIC_BASE_URL || "localhost:5000", {
 });
 
 const useSocketConnection = () => {
-    const userId = useChatSessionStore(state => state.userId);
+    const userId = useUserStore(state => state.userId);
     const [isConnected, setIsConnected] = useState<boolean>(false);
 
     useEffect(() => {

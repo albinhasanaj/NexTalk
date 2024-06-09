@@ -1,10 +1,10 @@
 "use client";
 import React, { useEffect } from 'react'
 import Image from 'next/image';
-import { useChatSessionStore } from '@/store/useStore';
+import { useUserStore } from '@/store/useStore';
 
 const NoChatSelected = ({ socket }: NoChatSelectedProps) => {
-    const { userId } = useChatSessionStore(state => ({
+    const { userId } = useUserStore(state => ({
         userId: state.userId
     }));
 

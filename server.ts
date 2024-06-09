@@ -181,8 +181,11 @@ app.prepare().then(() => {
 
                 const userSocketId = userSockets.get(userId);
                 console.log("User Socket ID:", userSocketId);
+
+                console.log("Friend ID:", friendId);
+                console.log("Nickname:", nickname);
                 if (userSocketId) {
-                    io.to(userSocketId).emit("updated-nickname", friendId, nickname);
+                    io.to(userSocketId).emit("updated-nickname", { friendId: friendId, nickname: nickname });
                 }
 
             } catch (error) {

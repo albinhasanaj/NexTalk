@@ -1,9 +1,18 @@
+"use client";
 import { useEffect, useState } from 'react'
-import { useChatSessionStore } from '@/store/useStore'
+import { useSelectedFriendStore, useFriendsListStore } from '@/store/useStore'
 
 const ChatHeader = () => {
-    const { username, receiverNickname } = useChatSessionStore(state => ({ username: state.receiverUsername, receiverNickname: state.receiverNickname }));
-    // get date and time in 5/23/2024 format and 01:52 format
+
+    const { friendId, receiverUsername } = useSelectedFriendStore(state => ({
+        friendId: state.friendId,
+        receiverUsername: state.receiverUsername,
+    }));
+
+    const { friends } = useFriendsListStore(state => ({
+        friends: state.friends,
+    }));
+
 
     const [dateTime, setDateTime] = useState({
         date: new Date().toLocaleDateString('en-US', {
@@ -41,7 +50,7 @@ const ChatHeader = () => {
     return (
         <header className='py-4 px-4 text-[14px] md:text-[16px] bg-[#424141] w-full md:rounded-tl-none rounded-bl-none rounded-tr-3xl flex justify-between items-center rounded-tl-3xl space-x-2'>
             <span>{dateTime.date}</span>
-            <span className='text-[#C0C0C0] font-bold overflow-hidden whitespace-nowrap overflow-ellipsis'>Talking to: {receiverNickname ? receiverNickname : username}</span>
+            <span className='text-[#C0C0C0] font-bold overflow-hidden whitespace-nowrap overflow-ellipsis'>Talking to: {friends.get(friendId) || receiverUsername}</span>
             <span>{dateTime.time}</span>
         </header>
     )

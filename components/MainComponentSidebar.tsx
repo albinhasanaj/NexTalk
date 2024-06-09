@@ -3,7 +3,7 @@ import Searchbar from './Searchbar'
 import Account from './Account'
 import Image from 'next/image';
 import { Fragment, useEffect, useState } from 'react';
-import { useChatSessionStore } from '@/store/useStore';
+import { useUserStore, useSelectedFriendStore, useFriendsListStore } from '@/store/useStore';
 import debounce from 'lodash.debounce';
 import toast from 'react-hot-toast';
 
@@ -13,16 +13,10 @@ const MainComponentSidebar = ({ view, setView, isOpen, setIsOpen, socket }: Main
     const [friends, setFriends] = useState<AccountProps[]>([]);
     const [selectedFriend, setSelectedFriend] = useState("");
 
-    const classNames = isOpen ? "flex rounded-3xl" : "hidden"
+    const classNames = isOpen ? "flex rounded-3xl" : "hidden";
 
-    const { setFriendId, setReceiverUsername, setUserId, userId, setUserProfilePic, setIsGithubUser } = useChatSessionStore(state => ({
-        setFriendId: state.setFriendId,
-        setReceiverUsername: state.setReceiverUsername,
-        setUserId: state.setUserId,
-        setUserProfilePic: state.setUserProfilePic,
-        userId: state.userId,
-        setIsGithubUser: state.setIsGithubUser
-    }));
+    const { userId, setUserId, setIsGithubUser, setUserProfilePic } = useUserStore();
+    const { setFriendId, setReceiverUsername } = useSelectedFriendStore();
 
     useEffect(() => {
         if (userId) {
@@ -104,7 +98,6 @@ const MainComponentSidebar = ({ view, setView, isOpen, setIsOpen, socket }: Main
         console.log(data)
         const filteredData = data.data.slice(1)
         console.log('Friends:', filteredData)
-
 
         setIsGithubUser(data.data[0].isGithubUser);
         setUserProfilePic(data.data[0].profilePic);

@@ -1,14 +1,14 @@
 "use client";
 import Image from 'next/image'
 import { ChangeEvent, FormEvent, Fragment, useEffect, useRef, useState } from 'react';
-import { useChatSessionStore } from '@/store/useStore';
+import { useUserStore } from '@/store/useStore';
 import toast from 'react-hot-toast';
 
 const Settings = () => {
-    const { userProfilePic, setUserProfilePic, isGithubUser } = useChatSessionStore(state => ({
+    const { userProfilePic, isGithubUser, setUserProfilePic } = useUserStore(state => ({
         userProfilePic: state.userProfilePic,
-        setUserProfilePic: state.setUserProfilePic,
-        isGithubUser: state.isGithubUser
+        isGithubUser: state.isGithubUser,
+        setUserProfilePic: state.setUserProfilePic
     }));
 
     const [imgSrc, setImgSrc] = useState<string>(userProfilePic || '/images/nickname.png');

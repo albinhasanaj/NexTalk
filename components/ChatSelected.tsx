@@ -3,7 +3,7 @@ import { useState, useEffect, useRef, Fragment, ChangeEvent } from 'react';
 import EmojiMenu from './EmojiMenu';
 import "../app/chat.css";
 import toast from 'react-hot-toast';
-import { useChatSessionStore } from '@/store/useStore';
+import { useFriendsListStore, useSelectedFriendStore, useUserStore } from '@/store/useStore';
 import ChatBubble from './ChatBubble';
 import { useEmojiEffect } from '@/hooks/useEmojiEffect';
 
@@ -12,11 +12,19 @@ const ChatSelected = ({ socket, isConnected }: ChatSelectedProps) => {
     const [value, setValue] = useState<string>('');
     const [messages, setMessages] = useState<Message[]>([]);
 
-    const { friendId, userId, receiverUsername, receiverNickname } = useChatSessionStore(state => ({
+    const { friendId, receiverUsername } = useSelectedFriendStore(state => ({
+        receiverNickname: state.receiverNickname,
         friendId: state.friendId,
-        userId: state.userId,
         receiverUsername: state.receiverUsername,
-        receiverNickname: state.receiverNickname
+    }));
+
+    const { friends, setFriends } = useFriendsListStore(state => ({
+        friends: state.friends,
+        setFriends: state.setFriends,
+    }));
+
+    const { userId } = useUserStore(state => ({
+        userId: state.userId,
     }));
 
     const { emojis,
@@ -55,6 +63,7 @@ const ChatSelected = ({ socket, isConnected }: ChatSelectedProps) => {
             };
 
             socket.on('reaction', handleReceiveReaction);
+
             return () => {
                 socket.off('reaction', handleReceiveReaction);
             };
@@ -114,13 +123,17 @@ const ChatSelected = ({ socket, isConnected }: ChatSelectedProps) => {
 
     }, [friendId]);
 
+    useEffect(() => {
+        console.log("Friends:", friends)
+    }, [friends]);
+
     return (
         <div className='flex flex-col w-full h-full justify-between relative overflow-hidden'>
             <div className="overflow-x-hidden scrollbar px-6 mb-6">
                 {messages.map((message: Message, index: number) => (
                     <Fragment key={index}>
                         <ChatBubble
-                            username={message.isSender ? "You" : receiverNickname ? receiverNickname : receiverUsername}
+                            username={message.isSender ? "You" : friends.get(message.senderId) || receiverUsername}
                             message={message.content}
                             isSender={message.isSender}
                             profilePic={message.sender ? message.sender.profilePic : ''}
@@ -135,11 +148,6 @@ const ChatSelected = ({ socket, isConnected }: ChatSelectedProps) => {
             ))}
 
             <div className='flex w-full justify-center relative'>
-                {/* <input type="text" placeholder='Send a message' className='w-[85%] h-11 mb-4 rounded-[10px] bg-[#424141] border-[1px] border-solid border-[#353434] pl-3 placeholder-[rgba(255,255,255,0.50)] text-[0.8rem]'
-                    value={value}
-                    onChange={handleChange}
-                    onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-                /> */}
                 <label className="input bg-[#424141] flex items-center gap-2 w-[90%] md:w-[80%] mb-4">
                     <input type="text" className="grow text-[12px] md:text-[14px]" placeholder="Send a message"
                         value={value}

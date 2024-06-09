@@ -5,14 +5,22 @@ import '../app/chat.css'
 import { GrUserAdd } from "react-icons/gr";
 import { GoGear } from "react-icons/go";
 import toast from 'react-hot-toast';
-import { useChatSessionStore } from '@/store/useStore';
+import { useSelectedFriendStore, useUserStore, useFriendsListStore } from '@/store/useStore';
 
 const Account = ({ username, nickname, profilePic, isOnline, hasIcon, isPinned, newMessages, handleClick, isFriend, id, refreshFriends, socket }: AccountProps) => {
     const [imgSrc, setImgSrc] = useState<string>(profilePic || '/images/nickname.png');
-    const { userId, setReceiverNickname, receiverNickname } = useChatSessionStore(state => ({
+
+    const { userId } = useUserStore(state => ({
         userId: state.userId,
+    }));
+    const { receiverNickname, setReceiverNickname, setReceiverUsername } = useSelectedFriendStore(state => ({
+        receiverNickname: state.receiverNickname,
         setReceiverNickname: state.setReceiverNickname,
-        receiverNickname: state.receiverNickname
+        setReceiverUsername: state.setReceiverUsername,
+    }));
+
+    const { setFriends } = useFriendsListStore(state => ({
+        setFriends: state.setFriends,
     }));
 
     const [nickNameSocket, setNickNameSocket] = useState<string | null>('');
@@ -79,17 +87,20 @@ const Account = ({ username, nickname, profilePic, isOnline, hasIcon, isPinned, 
         if (!socket) {
             return;
         }
-        socket.on('updated-nickname', (friendId: string, nickname: string) => {
-            if (friendId === id) {
-                if (nickname === "") {
-                    setNickNameSocket(null);
-                    setReceiverNickname(username);
+        socket.on('updated-nickname', (data: { friendId: string, nickname: string }) => {
+            if (data.friendId === id) {
+                if (data.nickname === "") {
+                    setReceiverUsername(username);
+                    setNickNameSocket(username);
+                    setReceiverNickname(new Map([[data.friendId, username]]));
+                    setFriends({ friendId: data.friendId, nickname: username });
                 } else {
-                    setNickNameSocket(nickname);
-                    setReceiverNickname(nickname);
+                    setReceiverUsername(data.nickname);
+                    setNickNameSocket(data.nickname);
+                    setReceiverNickname(new Map([[data.friendId, data.nickname]]));
+                    setFriends({ friendId: data.friendId, nickname: data.nickname });
                 }
             }
-
         });
 
         return () => {
@@ -151,7 +162,9 @@ const Account = ({ username, nickname, profilePic, isOnline, hasIcon, isPinned, 
                     </div>
                     <div className='flex flex-col'>
                         <div className='flex items-center text-white text-nowrap relative'>
-                            <span>{nickNameSocket ? nickNameSocket : receiverNickname ? receiverNickname : nickname ? nickname : username}</span>
+                            <span>
+                                {nickNameSocket ? nickNameSocket : receiverNickname.get(friendId) ? receiverNickname.get(friendId) : nickname ? nickname : username}
+                            </span>
                             {isPinnedSocket && (
                                 <sup className="absolute left-[100%] top-[10%]">📌</sup>
                             )}
