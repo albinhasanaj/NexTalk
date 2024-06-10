@@ -2,10 +2,14 @@ import { createServer } from "http";
 import next from "next";
 import { Server } from "socket.io";
 import prisma from "./lib/prisma";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const dev = process.env.NODE_ENV !== "production";
 const hostname = process.env.HOSTNAME || "localhost";
 const port: number = parseInt(process.env.PORT || "5000");
+
 
 const app = next({ dev, hostname, port });
 const handler = app.getRequestHandler();
