@@ -3,7 +3,7 @@ import Searchbar from './Searchbar'
 import Account from './Account'
 import Image from 'next/image';
 import { Fragment, useEffect, useState } from 'react';
-import { useUserStore, useSelectedFriendStore, useFriendsListStore } from '@/store/useStore';
+import { useUserStore, useSelectedFriendStore } from '@/store/useStore';
 import debounce from 'lodash.debounce';
 import toast from 'react-hot-toast';
 

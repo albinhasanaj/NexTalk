@@ -18,9 +18,8 @@ const ChatSelected = ({ socket, isConnected }: ChatSelectedProps) => {
         receiverUsername: state.receiverUsername,
     }));
 
-    const { friends, setFriends } = useFriendsListStore(state => ({
+    const { friends } = useFriendsListStore(state => ({
         friends: state.friends,
-        setFriends: state.setFriends,
     }));
 
     const { userId } = useUserStore(state => ({
@@ -122,10 +121,6 @@ const ChatSelected = ({ socket, isConnected }: ChatSelectedProps) => {
         }
 
     }, [friendId]);
-
-    useEffect(() => {
-        console.log("Friends:", friends)
-    }, [friends]);
 
     return (
         <div className='flex flex-col w-full h-full justify-between relative overflow-hidden'>

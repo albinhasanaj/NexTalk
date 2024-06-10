@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import MainComponent from '@/components/MainComponent'
 import MainComponentSidebar from '@/components/MainComponentSidebar';
 import useSocketConnection from '@/hooks/useSocketConnection';

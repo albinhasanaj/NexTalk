@@ -39,6 +39,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         });
 
+        // map through profile pic and messages of all the messages, and log username: profilepic
+
         // Mark all messages as seen by the receiver
         await prisma.message.updateMany({
             where: {
