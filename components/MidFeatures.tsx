@@ -4,7 +4,7 @@ import Features from './Features'
 
 const MidFeatures = () => {
     return (
-        <div className='pt-10 flex flex-col items-center gap-10'>
+        <div className='pt-10 flex flex-col items-center gap-10 h-screen'>
 
             {/* DESKTOP */}
             <div className='hidden md2:flex items-center text-center flex-col gap-10 appearAnimation'>
@@ -22,8 +22,10 @@ const MidFeatures = () => {
                     <h1 className='text-white font-bold text-2xl xs:text-4xl'>Features Designed For <br /> Fun Chatting</h1>
                     <p className='text-[1rem] xl:text-xl'>Explore various features within <br />this app, designed to enhance <br />user experience to its fullest.</p>
                 </div>
-                <TryForFreeBtn />
                 <Features />
+                <div className='mt-4'>
+                    <TryForFreeBtn />
+                </div>
             </div>
         </div>
     )

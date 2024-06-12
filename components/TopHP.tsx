@@ -4,7 +4,7 @@ import TryForFreeBtn from './TryForFreeBtn';
 
 const TopHP = () => {
     return (
-        <main className='h-screen w-full bg-black'>
+        <main className='h-full w-full bg-black'>
 
             {/* GRID IMAGE */}
             <div className='absolute inset-0 '>
@@ -19,7 +19,7 @@ const TopHP = () => {
             </div>
 
             {/* HERO TEXT */}
-            <div className='hidden md2:flex relative w-full h-screen items-center justify-center'>
+            <div className='hidden md2:flex relative w-full h-full items-center justify-center'>
                 <div className='max-w-[1440px] flex items-center w-full justify-between px-20 mb-20'>
                     <div>
                         <Image
