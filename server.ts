@@ -8,8 +8,7 @@ dotenv.config();
 
 const dev = process.env.NODE_ENV !== "production";
 const hostname = process.env.HOSTNAME || "localhost";
-const port: number = parseInt(process.env.PORT || "5000");
-
+const port = parseInt(process.env.PORT || "3000");
 
 const app = next({ dev, hostname, port });
 const handler = app.getRequestHandler();
